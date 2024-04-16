@@ -16,6 +16,7 @@ public class Zoom : MonoBehaviour
     }
 
     public void OnZoom(){
+         
         card = Instantiate(gameObject,new Vector2(Input.mousePosition.x,Input.mousePosition.y+200),Quaternion.identity);
         card.transform.SetParent(Canvas.transform,false);
         card.layer=LayerMask.NameToLayer("Zoom");
