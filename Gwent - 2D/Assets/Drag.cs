@@ -46,18 +46,21 @@ public class Drag : MonoBehaviour
     }
     
     private void OnCollisionEnter2D(Collision2D collision){
-         
+         string player="";
+         if(GameManager.Instance.State== GameManager.GameState.Player1Turn) player="Player1";
+        else if(GameManager.Instance.State== GameManager.GameState.Player2Turn) player="Player2";
+
         Card card=gameObject.GetComponent<data>().card;
         Boards.Rows row;
          if(collision.gameObject.GetComponent<Row>()!=null) {
          row=collision.gameObject.GetComponent<Row>().row;
          } else row= Boards.Rows.Graveyard; //Posible falla este parche
         
-      
+          
          
         
-           if(card is UnitsCard unitsCard){
-           
+           if(card is UnitsCard unitsCard &&(collision.gameObject.name.Contains(player))){
+             
               if(unitsCard.Atack.ToString().Contains(row.ToString())){
                 isOverZone=true;
                 dropeZone=collision.gameObject;
@@ -65,7 +68,19 @@ public class Drag : MonoBehaviour
                  
                 
               }
-          } 
+          }  if(card is WeatherCard &&(collision.gameObject.name.Contains(player))){
+                  if(row == Boards.Rows.Weather){
+                     
+                      isOverZone=true;
+                dropeZone=collision.gameObject;
+                if(collision.gameObject.name.Contains("W1")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.M;
+                else if(collision.gameObject.name.Contains("W2")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.R;
+               else if(collision.gameObject.name.Contains("W3")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.S;
+
+
+              
+                  }
+          }
           
        
           
@@ -99,6 +114,7 @@ public class Drag : MonoBehaviour
         transform.SetParent(dropeZone.transform,false);
         startPos=transform.position; 
          isPlacedBefore=true;
+          
          
         GameManager.PlayCard(gameObject);
        

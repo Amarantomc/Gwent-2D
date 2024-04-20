@@ -22,7 +22,7 @@ public class Zoom : MonoBehaviour
         card.layer=LayerMask.NameToLayer("Zoom");
 
         RectTransform rect=card.GetComponent<RectTransform>();
-        rect.sizeDelta=new Vector2(266,318);
+        rect.sizeDelta=new Vector2(400,350);
     }
 
     public void OffZoom(){

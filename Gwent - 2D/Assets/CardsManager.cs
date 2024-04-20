@@ -25,7 +25,17 @@ public class CardsManager : MonoBehaviour
       }
     void Start()
     {    
-         prefabs= Resources.LoadAll<GameObject>("Prefabs");
+        CardStar();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {    
+        
+    }
+       
+       public void CardStar(){
+           prefabs= Resources.LoadAll<GameObject>("Prefabs");
          cardsPlayer1=new List<GameObject>(); 
          cardsPlayer2=new List<GameObject>();
 
@@ -61,15 +71,13 @@ public class CardsManager : MonoBehaviour
             }
          }
          GameManager.Instance.updateState(GameManager.GameState.Player1Turn);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {    
+       }
         
-    }
-       
-       
+        
+        
+        
+        
         public void  ChangeCard(GameManager.GameState state)
     {     
          if(state== GameManager.GameState.Player1Turn){

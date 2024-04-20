@@ -7,6 +7,8 @@ using System.Linq;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {   
@@ -27,6 +29,8 @@ public class GameManager : MonoBehaviour
     public int Rounds=0;
     GameObject deck1Button;
     GameObject deck2Button;
+
+    public GameObject RoundWiner;
 
 
      public enum GameState{
@@ -73,20 +77,23 @@ public class GameManager : MonoBehaviour
          break;
          case GameState.Player2Turn:
          
-       CardsManager.Instance.ChangeCard(state);
-       updateDeckButton(state);
-       if(CheckPass()) updateState(GameState.DecideRoundWinner);
+         CardsManager.Instance.ChangeCard(state);
+         updateDeckButton(state);
+        if(CheckPass()) updateState(GameState.DecideRoundWinner);
          
             
             
 
          break;
          case GameState.DecideRoundWinner:
-          DecideRoundWinner();
+         Players players= DecideRoundWinner();
           if(Wins.Contains(2)) updateState(GameState.DecideWin);
+          ShowRoundWinner(players);
           break;
          case GameState.DecideWin:
          Players player=DecideWinner();
+         ShowWinner(player);
+         
          
          break;
          
@@ -104,6 +111,10 @@ public class GameManager : MonoBehaviour
       GameBase run=new GameBase();
        Players[0]=run.player1;
        Players[1]=run.player2;
+       Players[0].Points+=30;
+       Players[1].Points+=30;
+       RoundWiner.SetActive(false);
+
        
         
          
@@ -141,8 +152,11 @@ public class GameManager : MonoBehaviour
             Instance.Players[0].Board.SetCard(card1,card1.Rows);
             Instance.Players[0].DeleteCardInHand(card1);
             Instance.Players[0].RefreshPoints();
+            Instance.Players[0].Points+=30;
             
             CardsManager.Instance.RemoveCard(card, GameState.Player1Turn);
+            Instance.EffectActivation(card1,Instance.Players[0],Instance.Players[1]);
+            
             if(!Instance.Pass[1]){
               Instance.RotatePlayer2();
             Instance.updateState(GameState.Player2Turn);
@@ -152,8 +166,12 @@ public class GameManager : MonoBehaviour
           Instance.Players[1].Board.SetCard(card1,card1.Rows);
           Instance.Players[1].DeleteCardInHand(card1);
           Instance.Players[1].RefreshPoints();
+          Instance.Players[1].Points+=30;
+
  
           CardsManager.Instance.RemoveCard(card, GameState.Player2Turn);
+          Instance.EffectActivation(card1,Instance.Players[1],Instance.Players[0]);
+
           if(!Instance.Pass[0]){
             Instance.RotatePlayer1();
             Instance.updateState(GameState.Player1Turn);
@@ -177,21 +195,62 @@ public class GameManager : MonoBehaviour
           return true;
        } 
         
-        void DecideRoundWinner(){
+        Players DecideRoundWinner(){
           Rounds++;
            if(Players[0].Points>Players[1].Points){
              Wins[0]++;
+             
+             return Players[0];
            } else if(Players[0].Points<Players[1].Points){
              Wins[1]++;
+             return Players[1];
            }
-        }
+           return Players[0];
+        } 
+
+        void ShowRoundWinner(Players players){
+          RoundWiner.SetActive(true);
+          RoundWiner.transform.GetComponentInChildren<TMP_Text>().text=players.ToString();
+           
+          
+          RestarRound();
+          
+
+        } 
 
         Players DecideWinner(){
            int index=0;
            if(Wins[0]==2) index=0;
            if(Wins[1]==2) index=1;
            return Players[index];
+        }  
+
+        void ShowWinner(Players players){
+          RoundWiner.SetActive(true);
+          RoundWiner.transform.GetComponentInChildren<TMP_Text>().text=players.ToString();
+           
+          RestarGame();
+
         }
+
+        void RestarGame(){
+          SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        } 
+
+
+        void RestarRound(){
+           GameObject board=GameObject.Find("Board");
+       foreach (Transform child in board.transform)
+      {
+         for(int i=0;i<child.transform.childCount;i++){
+           Destroy(child.GetChild(i));
+         }
+      } 
+          CardsManager.Instance.CardStar();
+        }
+
+
+
     void EffectActivation(Card card, Players player1, Players player2){
           
           if(card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard ){
@@ -215,7 +274,7 @@ public class GameManager : MonoBehaviour
             
             } 
 
-          if(card.Effect is DeleteCardInGame ){
+         else if(card.Effect is DeleteCardInGame ){
             card.Effect.Action(player2);
             Card card1=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
               if(State== GameState.Player1Turn){
@@ -236,7 +295,7 @@ public class GameManager : MonoBehaviour
              
             } 
 
-            if(card.Effect is Steal){
+          else  if(card.Effect is Steal){
                card.Effect.Action(player1);
                 if(State== GameState.Player1Turn){
                    GameObject hand= GameObject.Find("Hand Player1");
