@@ -8,6 +8,8 @@ public class data : MonoBehaviour
 
     public Card card;
     public Players player;
+
+    
     // Start is called before the first frame update
     void Start()
     {

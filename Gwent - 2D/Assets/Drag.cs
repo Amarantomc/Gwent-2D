@@ -15,7 +15,7 @@ public class Drag : MonoBehaviour
 
     private bool isPlacedBefore=false;
 
-    private Players player;
+    
     private GameObject dropeZone;
 
     private GameObject startParent;
@@ -28,7 +28,6 @@ public class Drag : MonoBehaviour
 
      private void Awake(){
         Canvas=GameObject.Find("UI");
-        player=gameObject.GetComponent<data>().player;
          
        
      }
@@ -38,8 +37,8 @@ public class Drag : MonoBehaviour
     
     void Update()
     {   
-        if(isDraging && (!isPlacedBefore) && ((GameManager.Instance.State== GameManager.GameState.Player1Turn &&player==GameManager.Instance.Players[0])
-      ||(GameManager.Instance.State== GameManager.GameState.player2Turn &&player==GameManager.Instance.Players[1])  )){
+        
+        if(isDraging && (!isPlacedBefore)){
             transform.position=new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             transform.SetParent(Canvas.transform,true);
             
@@ -101,7 +100,7 @@ public class Drag : MonoBehaviour
         startPos=transform.position; 
          isPlacedBefore=true;
          
-        GameManager.PlayCard(gameObject.GetComponent<data>().card);
+        GameManager.PlayCard(gameObject);
        
         
        
