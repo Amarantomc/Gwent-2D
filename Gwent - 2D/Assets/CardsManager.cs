@@ -37,23 +37,28 @@ public class CardsManager : MonoBehaviour
          for(int i=0;i<player1.Hand.Count;i++){
            for(int j=0;j<prefabs.Length;j++){
              
-             if( player1.Hand[i].Name==prefabs[j].name||player2.Hand[i].Name==prefabs[j].name ){
-               if(player1.Hand[i].Name==prefabs[j].name){
+             if( player1.Hand[i].Name==prefabs[j].name  ){
+              
                  cardsPlayer1.Add(prefabs[j]);
                   
                  cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
                  cardsPlayer1[i].GetComponent<data>().player=player1;
 
-               }
+               break;
+           }
+         } 
+         }
+
+         for(int i=0;i<player2.Hand.Count;i++){
+            for(int j=0;j<prefabs.Length;j++){
                if(player2.Hand[i].Name==prefabs[j].name){
                  cardsPlayer2.Add(prefabs[j]);
                   
                  cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
                  cardsPlayer2[i].GetComponent<data>().player=player2;
+                 break;
                }
-               break;
-           }
-         } 
+            }
          }
          GameManager.Instance.updateState(GameManager.GameState.Player1Turn);
     }
@@ -97,8 +102,7 @@ public class CardsManager : MonoBehaviour
                      {
                       Destroy(card.gameObject);
                      }
-                  }
-              for(int i=0;i<cardsPlayer2.Count;i++){
+                      for(int i=0;i<cardsPlayer2.Count;i++){
                  
                 
                 GameObject cardBack = Resources.Load<GameObject>("Prefabs/" + "CardBack");
@@ -108,6 +112,9 @@ public class CardsManager : MonoBehaviour
                 
                  
               }
+                  }
+             
+         
          } 
 
         
@@ -138,13 +145,14 @@ public class CardsManager : MonoBehaviour
              {
                Destroy(card.gameObject);
              }
-                  }
-             for(int i=0;i<cardsPlayer1.Count;i++){
+              for(int i=0;i<cardsPlayer1.Count;i++){
               GameObject cardBack = Resources.Load<GameObject>("Prefabs/" + "CardBack");
                   GameObject card=Instantiate(cardBack,new Vector3(0,0,0),Quaternion.identity);
 
                 card.transform.SetParent(HandPlayer1.transform,false);
              } 
+                  }
+            
                
               
             
