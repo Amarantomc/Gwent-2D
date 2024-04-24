@@ -19,13 +19,12 @@ public class CardsManager : MonoBehaviour
       public List<GameObject> cardsPlayer2;
     // Start is called before the first frame update
 
-      void Awake(){
-      Instance=this;
-
-      }
+      
     void Start()
     {    
-        CardStar();
+      Instance=this;
+        
+        GameStar();
     }
 
     // Update is called once per frame
@@ -34,7 +33,32 @@ public class CardsManager : MonoBehaviour
         
     }
        
-       public void CardStar(){
+            public void GameStar(){
+            if(GameManager.Instance.Players[0]!=null){
+                if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[0]){
+              CardStar();
+              GameManager.Instance.updateState( GameManager.GameState.Player1Turn);
+
+             } else if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[1]){
+              CardStar();
+              GameManager.Instance.updateState( GameManager.GameState.Player2Turn);
+             }
+            } else{
+              CardStar();
+              GameManager.Instance.updateState( GameManager.GameState.Player1Turn);
+            }
+            
+            
+             
+       }
+     
+     
+     
+     
+     
+       private void CardStar(){
+        
+
            prefabs= Resources.LoadAll<GameObject>("Prefabs");
          cardsPlayer1=new List<GameObject>(); 
          cardsPlayer2=new List<GameObject>();
@@ -70,9 +94,12 @@ public class CardsManager : MonoBehaviour
                }
             }
          }
-         GameManager.Instance.updateState(GameManager.GameState.Player1Turn);
+          
+      
+ 
+       } 
 
-       }
+
         
         
         

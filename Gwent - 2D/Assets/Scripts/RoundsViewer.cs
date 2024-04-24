@@ -15,6 +15,7 @@ public class RoundsViewer : MonoBehaviour
     void Start()
     {
         rounds="0/3";
+        box.text=rounds;
     }
 
     // Update is called once per frame
@@ -22,9 +23,9 @@ public class RoundsViewer : MonoBehaviour
     {
           state=GameManager.Instance.State;
          if(state==GameManager.GameState.Player1Turn){
-             box.text=GameManager.Instance.Players[0].Rounds.ToString()+"/3";
+             box.text=GameManager.Instance.Wins[0].ToString()+"/3";
          } else if(state== GameManager.GameState.Player2Turn){
-            box.text=GameManager.Instance.Players[1].Rounds.ToString()+"/3";
+            box.text=GameManager.Instance.Wins[1].ToString()+"/3";
          }
     }
 }
