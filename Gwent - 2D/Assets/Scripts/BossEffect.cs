@@ -14,10 +14,13 @@ public class BossEffect : MonoBehaviour
             gameObject.GetComponent<data>().card=GameManager.Instance.Players[0].Board.GetBoardCard(Logic.Boards.Rows.Heroe,0);
             gameObject.GetComponent<data>().card.Effect.Action(GameManager.Instance.Players[0]);
             gameObject.GetComponent<Button>().enabled=false;
+            GameManager.Instance.BossActivation[0]=true;
         } else if(GameManager.Instance.State == GameManager.GameState.Player2Turn){
             gameObject.GetComponent<data>().card=GameManager.Instance.Players[1].Board.GetBoardCard(Logic.Boards.Rows.Heroe,0);
             gameObject.GetComponent<data>().card.Effect.Action(GameManager.Instance.Players[1]);
             gameObject.GetComponent<Button>().enabled=false;
+            GameManager.Instance.BossActivation[1]=true;
+
             
 
         }

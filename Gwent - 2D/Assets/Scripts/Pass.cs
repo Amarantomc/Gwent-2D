@@ -9,12 +9,18 @@ public class Pass : MonoBehaviour
         if(state== GameManager.GameState.Player1Turn){
             GameManager.Instance.Pass[0]=true;
             if(!GameManager.Instance.Pass[1]) GameManager.Instance.RotatePlayer2();
-
-            GameManager.Instance.updateState(GameManager.GameState.Player2Turn);
+             
+             if(GameManager.Instance.initialPlayer2){
+                GameManager.Instance.updateState(GameManager.GameState.InitialPlayer2);
+             } else
+               GameManager.Instance.updateState(GameManager.GameState.Player2Turn);
         } else if(state == GameManager.GameState.Player2Turn){
             GameManager.Instance.Pass[1]=true;
             if(!GameManager.Instance.Pass[0]) GameManager.Instance.RotatePlayer1();
-
+             
+             if(GameManager.Instance.initialPlayer1){
+                GameManager.Instance.updateState(GameManager.GameState.InitialPlayer1);
+             } else
             GameManager.Instance.updateState(GameManager.GameState.Player1Turn);
         }
     }

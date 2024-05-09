@@ -16,6 +16,13 @@ public class OnClick : MonoBehaviour
       public GameObject HandPlayer;
       Players player;
 
+      public static OnClick Instance;
+
+
+      void Awake(){
+        Instance=this;
+      }
+
        
         public void Onclick()
     {   

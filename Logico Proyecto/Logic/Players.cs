@@ -78,7 +78,7 @@ public class Players{
          }
       }
      } 
-     Points=newPoints;
+     Points=newPoints+30;
      
      
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using Logic;
 
@@ -9,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {   
@@ -26,6 +28,8 @@ public class GameManager : MonoBehaviour
 
    public int [] Wins=new int[2];
 
+   public bool [] BossActivation=new bool[2];
+
     public int Rounds=0;
     GameObject deck1Button;
     GameObject deck2Button;
@@ -37,11 +41,17 @@ public class GameManager : MonoBehaviour
 
     public GameObject GameWiner;
 
+     
+
     public Players currentWinnerPlayer;
 
 
      public enum GameState{
       Start,
+
+      InitialPlayer1,
+
+      InitialPlayer2,
       Player1Turn,
 
       Player2Turn,
@@ -52,11 +62,15 @@ public class GameManager : MonoBehaviour
     
     public GameObject canvas;
 
+    public GameObject InitialTurn;
+    public bool initialPlayer1;
 
-
-    
+    public bool initialPlayer2; 
+ 
     void Awake(){
       Instance=this;
+      initialPlayer1=true;
+      initialPlayer2=true;
       deck1Button=GameObject.Find("Deck Player1");
       deck2Button= GameObject.Find("Deck Player2");
       boss1Button=GameObject.Find("CJ");
@@ -67,7 +81,9 @@ public class GameManager : MonoBehaviour
        
          
         
-    }  
+    } 
+
+    
    
 
 
@@ -80,6 +96,22 @@ public class GameManager : MonoBehaviour
        { 
          case GameState.Start:
          GameStart();
+         break;
+
+         case GameState.InitialPlayer1:
+          
+         CardsManager.Instance.ChangeCard(state);
+         initialPlayer1=false;
+         InitialTurn.SetActive(true);
+         InicialCards.Instance.SetCards();
+         break;
+
+         case GameState.InitialPlayer2:
+          
+         CardsManager.Instance.ChangeCard(state);
+         initialPlayer2=false;
+         InitialTurn.SetActive(true);
+         InicialCards.Instance.SetCards();
          break;
         
          case GameState.Player1Turn:
@@ -94,6 +126,7 @@ public class GameManager : MonoBehaviour
          } 
           CardsManager.Instance.ChangeCard(state);
          updateDeckButton(state);
+          OnClick.Instance.Onclick();
          break;
        
          case GameState.Player2Turn:
@@ -108,6 +141,8 @@ public class GameManager : MonoBehaviour
         }
          CardsManager.Instance.ChangeCard(state);
          updateDeckButton(state);
+          OnClick.Instance.Onclick();
+
          break;
       
          
@@ -130,11 +165,15 @@ public class GameManager : MonoBehaviour
     void GameStart(){
        
       Pass=new bool[2];
-      GameBase run=new GameBase();
+      BossActivation=new bool[2];
+      
+       GameBase run=new GameBase();
        Players[0]=run.player1;
        Players[1]=run.player2;
        Players[0].Points+=30;
        Players[1].Points+=30;
+       initialPlayer1=true;
+       initialPlayer2=true;
        
        
         
@@ -176,34 +215,44 @@ public class GameManager : MonoBehaviour
             
             
             CardsManager.Instance.RemoveCard(card, GameState.Player1Turn);
-           Instance.EffectActivation(card1,Instance.Players[0],Instance.Players[1]);
-            Instance.Players[0].RefreshPoints();
-            Instance.Players[0].Points+=30;
-
+            EffectManager.Instance.CheckIncrease(card1);
+            EffectManager.Instance.CheckWeather(card1);
+ 
+          EffectManager.Instance.EffectActivation(card1,Instance.Players[0],Instance.Players[1]);
+         Instance.Players[0].RefreshPoints();
+     
+    
+     if(!Instance.Pass[1]){
+            Instance.RotatePlayer2();
+            if(Instance.initialPlayer2) Instance.updateState(GameState.InitialPlayer2);
+            else Instance.updateState(GameState.Player2Turn);
             
-            if(!Instance.Pass[1]){
-              Instance.RotatePlayer2();
-            Instance.updateState(GameState.Player2Turn);
-             
-            }
-         } else{
+          }
+          
+       }  else{
           Instance.Players[1].Board.SetCard(card1,card1.Rows);
           Instance.Players[1].DeleteCardInHand(card1);
           
 
  
           CardsManager.Instance.RemoveCard(card, GameState.Player2Turn);
-          Instance.EffectActivation(card1,Instance.Players[1],Instance.Players[0]);
+          EffectManager.Instance.CheckIncrease(card1);
+            EffectManager.Instance.CheckWeather(card1);
+             EffectManager.Instance.EffectActivation(card1,Instance.Players[1],Instance.Players[0]);  
+
           Instance.Players[1].RefreshPoints();
-          Instance.Players[1].Points+=30;
-
-
-
-          if(!Instance.Pass[0]){
+     
+     if(!Instance.Pass[0]){
             Instance.RotatePlayer1();
-            Instance.updateState(GameState.Player1Turn);
+            if(Instance.initialPlayer1) Instance.updateState(GameState.InitialPlayer1);
+           else Instance.updateState(GameState.Player1Turn);
             
           }
+  
+
+
+
+         
 
          }
     }  
@@ -211,13 +260,17 @@ public class GameManager : MonoBehaviour
           if(state== GameState.Player1Turn){
              deck1Button.GetComponent<Button>().enabled=true;
              deck2Button.GetComponent<Button>().enabled=false; 
-             boss1Button.GetComponent<Button>().enabled=true;
              boss2Button.GetComponent<Button>().enabled=false;
+             if(!BossActivation[0]) boss1Button.GetComponent<Button>().enabled=true;
+             
+             
           } else if( state== GameState.Player2Turn){
             deck1Button.GetComponent<Button>().enabled=false;
              deck2Button.GetComponent<Button>().enabled=true;
-              boss1Button.GetComponent<Button>().enabled=false;
-             boss2Button.GetComponent<Button>().enabled=true;
+             boss1Button.GetComponent<Button>().enabled=false;
+             if(!BossActivation[1])boss2Button.GetComponent<Button>().enabled=true;
+              
+             
           }
        }
      
@@ -278,117 +331,10 @@ public class GameManager : MonoBehaviour
 
       
 
+     
 
-
-    void EffectActivation(Card card, Players player1, Players player2){
-          
-          if(card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard ){
-            card.Effect.Action(player2);
-            Card card1=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
-               if(State== GameState.Player1Turn){
-              GameObject row= GameObject.Find(card1.Rows.ToString()+" Player2");
-            GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-            GameObject graveyard= GameObject.Find("Graveyard Player2");
-            destroy.transform.SetParent(graveyard.transform,false);
-          }
-          
-          
-           else if(State== GameState.Player2Turn){
-               GameObject row= GameObject.Find(card1.Rows.ToString()+" Player1");
-            GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-            GameObject graveyard= GameObject.Find("Graveyard Player1");
-            destroy.transform.SetParent(graveyard.transform,false);
-          }
-
-            
-            } 
-
-         else if(card.Effect is DeleteCardInGame ){
-            card.Effect.Action(player2);
-            Card card1=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
-              if(State== GameState.Player1Turn){
-                 GameObject row= GameObject.Find(card1.Rows.ToString()+" Player2");
-                GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-                GameObject graveyard= GameObject.Find("Graveyard Player2");
-                 destroy.transform.SetParent(graveyard.transform,false);
-          }
-            
-            
-           else if(State== GameState.Player2Turn){
-            GameObject row= GameObject.Find(card1.Rows.ToString()+" Player1");
-            GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-            GameObject graveyard= GameObject.Find("Graveyard Player1");
-            destroy.transform.SetParent(graveyard.transform,false);
-          }
-               
-             
-            } 
-
-          else  if(card.Effect is Steal){
-               card.Effect.Action(player1);
-                if(State== GameState.Player1Turn){
-                   GameObject hand= GameObject.Find("Hand Player1");
-                   if(hand.transform.childCount<10){
-                      foreach (GameObject card1 in CardsManager.Instance.cardsPlayer1)
-                      {
-                        if(card1.name== player1.Hand[player1.Hand.Count-1].Name){
-                          GameObject card2=Instantiate(card1,new Vector3(0,0,0),Quaternion.identity);
-                           card2.transform.SetParent(hand. transform,false);
-                           card2.GetComponent<data>().card=player1.Hand[player1.Hand.Count-1];
-                           card2.GetComponent<data>().player=player1;
-                           CardsManager.Instance.cardsPlayer1.Add(card2);
-                          }
-                      }
-                   }
-                }    else if(State== GameState.Player2Turn){
-                   GameObject hand= GameObject.Find("Hand Player2");
-                   if(hand.transform.childCount<10){
-                      foreach (GameObject card1 in CardsManager.Instance.cardsPlayer1)
-                      {
-                        if(card1.name== player1.Hand[player1.Hand.Count-1].Name){
-                          GameObject card2=Instantiate(card1,new Vector3(0,0,0),Quaternion.identity);
-                           card2.transform.SetParent(hand. transform,false);
-                           card2.GetComponent<data>().card=player1.Hand[player1.Hand.Count-1];
-                           card2.GetComponent<data>().player=player1;
-                           CardsManager.Instance.cardsPlayer2.Add(card2);
-                          }
-                      }
-                   }
-                } 
-            
-            }  else if(card.Effect is DeleteWeather){
-               card.Effect.Action(player1,player2,card);
-            } 
-            else if(card.Effect is PlusOne){
-              card.Effect.Action(player1,card);
-            }
-             else if(card.Effect is IncreaseRow2 || card.Effect is IncreaseRow4){
-              card.Effect.Action(player1,card);
-             } 
-             else if(card.Effect is SetWeather2 || card.Effect is SetWeather4){
-              card.Effect.Action(player1,player2,card);
-             }
-             else if(card.Effect is CleanRow){
-               Boards.Rows row= card.Effect.Action2(player2);
-               if(State== GameState.Player1Turn){
-                 GameObject row2= GameObject.Find(row.ToString()+" Player2");
-                 GameObject graveyard= GameObject.Find("Graveyard Player2");
-                  foreach (GameObject card1 in row2.transform )
-                  {
-                     card1.transform.SetParent(graveyard.transform,false);
-                  }
-               } else  if(State== GameState.Player2Turn){
-                 GameObject row2= GameObject.Find(row.ToString()+" Player1");
-                 GameObject graveyard= GameObject.Find("Graveyard Player1");
-                  foreach (GameObject card1 in row2.transform )
-                  {
-                     card1.transform.SetParent(graveyard.transform,false);
-                  }
-               }
-               
-             }
-
-    }
+ 
+   
 
    
 

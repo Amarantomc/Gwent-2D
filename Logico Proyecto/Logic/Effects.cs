@@ -1,9 +1,10 @@
 namespace Logic;
 public abstract class Effects{
-    public abstract void Action(Players player);
+    public abstract Card Action(Players player);
     public abstract void Action(Players player1,Card card);
     public abstract void Action(Players player1,Players player2,Card card);
-    public abstract Boards.Rows Action2(Players player);    
+    public abstract Boards.Rows Action2(Players player);
+
 
 
    
@@ -21,13 +22,16 @@ public class Steal:Effects{
         
     }
     
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {    
        if(player.Hand.Count<10){
          int index=Players.GetRandomNum(player.Deck.Length-1);
+         Card card=player.Deck.GetCard(index);
          player.Hand.Add(player.Deck.GetCard(index));
+         return card;
       
         }
+        return null!;
          
 
     }
@@ -55,20 +59,26 @@ public class Steal:Effects{
 }
 
 public class BossEffect : Effects
-{
-    public override void Action(Players player)
+{   
+
+    public BossEffect(){
+
+    }
+    
+    public override Card Action(Players player)
     {
         for(int i=0;i<player.Board.Length-2;i++){
             Boards.Rows rows= (Boards.Rows)i;
              foreach (var card in player.Board[rows])
              {
-                 if(card is UnitsCard units &&(units.Atack== UnitsCard.AtackType.R ||units.Atack== UnitsCard.AtackType.MR||units.Atack== UnitsCard.AtackType.RS||units.Atack== UnitsCard.AtackType.MRS) ){
+                 if(card is UnitsCard units && (units.Type == UnitsCard.UnitType.Silver)&&(units.Atack== UnitsCard.AtackType.R ||units.Atack== UnitsCard.AtackType.MR||units.Atack== UnitsCard.AtackType.RS||units.Atack== UnitsCard.AtackType.MRS) ){
                      units.Power++;
 
                  }
              }
              
         }
+        return null!;
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -99,9 +109,9 @@ public class DeleteWeather: Effects
    
         
 
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
-         
+         return null!;
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -140,28 +150,37 @@ public class DeleteWeather: Effects
 public class DeleteMorePowerCard : Effects
 
 {   
-    public override void Action(Players player)
+
+    public DeleteMorePowerCard(){
+
+    }  
+    public override Card Action(Players player)
     {
         
-    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,null);
+    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect());
        Boards.Rows maxRow=Boards.Rows.M;
+       bool find=false;
         
-        for(int i=0;i<player.Board.Length;i++){
+        for(int i=0;i<player.Board.Length-2;i++){
            
             Boards.Rows row= (Boards.Rows)i;
           
            foreach(Card card in player.Board[row]){
-            if(card is UnitsCard unitsCard){
+            if(card is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
                 if(maxPower.Power<unitsCard.Power){
                maxPower=unitsCard;
                maxRow=row;
+               find=true;
               }
                 }
             }
         
         } 
-
-        player.Board.DeleteBoardCard(maxRow,maxPower);  
+                if(find){
+                  player.Board.DeleteBoardCard(maxRow,maxPower);
+                  return maxPower;
+                } else return null!;
+          
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -182,28 +201,39 @@ public class DeleteMorePowerCard : Effects
 
 public class DeleteLessPowerCard : Effects
 
-{
-    public override void Action(Players player)
+{   
+
+    public DeleteLessPowerCard()
     {
-         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,null);
-       Boards.Rows minRow=Boards.Rows.M;
         
-        for(int i=0;i<player.Board.Length;i++){
+    }
+    public override Card Action(Players player)
+    {
+         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect());
+       Boards.Rows minRow=Boards.Rows.M;
+       bool find=false;
+        
+        for(int i=0;i<player.Board.Length-2;i++){
            
             Boards.Rows row= (Boards.Rows)i;
           
            foreach(Card card in player.Board[row]){
-            if(card is UnitsCard unitsCard){
+            if(card is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
                 if(minPower.Power>unitsCard.Power){
                minPower=unitsCard;
                minRow=row;
+               find=true;
               }
                 }
             }
         
-        } 
+        }   
+              if(find){
+                player.Board.DeleteBoardCard(minRow,minPower);
+                return minPower;
+              }else return null!;
 
-        player.Board.DeleteBoardCard(minRow,minPower);
+       
     }
 
     public override void Action(Players player1, Card card)
@@ -224,24 +254,24 @@ public class DeleteLessPowerCard : Effects
 
 public class DeleteCardInGame : Effects
 {
-   
+     public DeleteCardInGame(){
+
+     }
      public override void Action(Players player, Card card)
     {
-         
+         player.Board.DeleteBoardCard(card.Rows,card);
     }
 
     
     
 
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
-         int randomRow= Players.GetRandomNum(2);
-         Boards.Rows row=(Boards.Rows)randomRow;
-         int randomCard=Players.GetRandomNum( player.Board[row].Count);
-         Card card= player.Board.GetBoardCard(row,randomCard);
-         if(card is not WeatherCard && card is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
-            player.Board.DeleteBoardCard(row,card);
-         } else Action(player);
+          return null!; 
+
+          
+         
+        
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -257,22 +287,26 @@ public class DeleteCardInGame : Effects
 
 public class IncreaseRow2 : Effects
 {
-  
+    
+     public IncreaseRow2(){
+
+     }
     public override void Action(Players player, Card card)
     {
           int increase=2;
          foreach (Card card1 in player.Board[card.Rows])
          {  
-             if(card1 is UnitsCard units&& units.Type== UnitsCard.UnitType.Silver){
+             if(card1 is UnitsCard units&& !units.IncreaseAfected && units.Type== UnitsCard.UnitType.Silver){
                  units.Power+=increase;
+                 units.IncreaseAfected=true;
                 
              }
          }
     }
   
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
-         
+         return null!;
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -288,14 +322,18 @@ public class IncreaseRow2 : Effects
 
 public class IncreaseRow4 : Effects
 {
-   
+      
+      public IncreaseRow4(){
+
+      }
       public override void Action(Players player, Card card)
     {
         int increase=4;
          foreach (Card card1 in player.Board[card.Rows])
          {  
-             if(card1 is UnitsCard units&& units.Type== UnitsCard.UnitType.Silver){
+             if(card1 is UnitsCard units&& !units.IncreaseAfected && units.Type== UnitsCard.UnitType.Silver){
                  units.Power+=increase;
+                 units.IncreaseAfected=true;
                 
              }
          }
@@ -303,9 +341,9 @@ public class IncreaseRow4 : Effects
        
     }
    
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
-         
+         return null!;
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -320,26 +358,21 @@ public class IncreaseRow4 : Effects
 }
 
 public class SetLure : Effects
-{
-    public override void Action(Players player)
+{   
+
+    public SetLure(){
+
+    }
+    public override Card Action(Players player)
     {
-        
+        return null!;
     }
 
      
 
     public override void Action(Players player, Card card)
     {  
-       Boards.Rows rows=card.Rows;
-       UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,null); 
-       foreach (Card card1 in player.Board[rows])
-       {
-         if(card1 is UnitsCard unitsCard && unitsCard.Power<minPower.Power){
-            minPower=unitsCard;
-         }
-       }
-       player.Hand.Add(minPower);
-       player.Board.DeleteBoardCard(minPower.Rows,minPower);
+        player.Hand.Add(card);
 
     }
 
@@ -354,9 +387,12 @@ public class SetLure : Effects
     }
 }
 
-public class SetWeather2 : Effects
+public class SetWeather2 : Effects 
 
-{
+{   
+      public SetWeather2(){
+
+      }
     
       public override void Action(Players player, Card card)
     {
@@ -367,9 +403,9 @@ public class SetWeather2 : Effects
     
     
     
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
-        
+        return null!;
         
     }
 
@@ -378,13 +414,15 @@ public class SetWeather2 : Effects
         int weather=2;
 
         foreach(Card card1 in player1.Board[card.Rows]){
-            if(card1 is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected &&  unitsCard.Type== UnitsCard.UnitType.Silver){
                 unitsCard.Power-=weather;
+                unitsCard.WeatherAfected=true;
             }
         } 
          foreach(Card card1 in player2.Board[card.Rows]){
-            if(card1 is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver){
                 unitsCard.Power-=weather;
+                unitsCard.WeatherAfected=true;
             }
         }
         
@@ -398,7 +436,9 @@ public class SetWeather2 : Effects
 
 public class SetWeather4 : Effects
 {
-
+     public SetWeather4(){
+        
+      }
 
      public override void Action(Players player, Card card)
     {
@@ -406,10 +446,10 @@ public class SetWeather4 : Effects
     }
 
 
-    public override void Action(Players player)
+    public override Card Action(Players player)
     {
         
-        
+        return null!;
     }
 
     public override void Action(Players player1, Players player2, Card card)
@@ -417,13 +457,15 @@ public class SetWeather4 : Effects
         int weather=4;
 
         foreach(Card card1 in player1.Board[card.Rows]){
-            if(card1 is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver){
                 unitsCard.Power-=weather;
+                unitsCard.WeatherAfected=true;
             }
         }
           foreach(Card card1 in player2.Board[card.Rows]){
-            if(card1 is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver){
                 unitsCard.Power-=weather;
+                unitsCard.WeatherAfected=true;
             }
         }
     }
@@ -435,10 +477,14 @@ public class SetWeather4 : Effects
 }
 
 public class CleanRow : Effects
-{
-    public override void Action(Players player)
-    {   
+{   
+
+    public CleanRow(){
         
+      }
+    public override Card Action(Players player)
+    {   
+        return null!;
     }
 
     public override void Action(Players player, Card card)
@@ -468,18 +514,26 @@ public class CleanRow : Effects
         } 
 
         foreach (Card card in player.Board[lessRows])
-        {
+        {   
+            
+           
             player.Board.DeleteBoardCard(lessRows,card);
+               
+            
         }
         return lessRows;
     }
 }
 
 public class PlusOne : Effects
-{
-    public override void Action(Players player)
-    {
+{   
+
+    public PlusOne(){
         
+      }
+    public override Card Action(Players player)
+    {
+       return null!; 
     }
 
     public override void Action(Players player1, Card card)
@@ -505,20 +559,25 @@ public class PlusOne : Effects
 }
 
 public class BossEffect2 : Effects
-{
-    public override void Action(Players player)
+{   
+
+    public BossEffect2(){
+        
+      }
+    public override Card Action(Players player)
     {
            for(int i=0;i<player.Board.Length-2;i++){
             Boards.Rows rows= (Boards.Rows)i;
              foreach (var card in player.Board[rows])
              {
-                 if(card is UnitsCard units &&(units.Atack== UnitsCard.AtackType.S ||units.Atack== UnitsCard.AtackType.MS||units.Atack== UnitsCard.AtackType.RS||units.Atack== UnitsCard.AtackType.MRS) ){
+                 if(card is UnitsCard units && (units.Type== UnitsCard.UnitType.Silver)&& (units.Atack== UnitsCard.AtackType.S ||units.Atack== UnitsCard.AtackType.MS||units.Atack== UnitsCard.AtackType.RS||units.Atack== UnitsCard.AtackType.MRS) ){
                      units.Power++;
 
                  }
              }
              
-        }
+        } 
+        return null!;
     }
 
     public override void Action(Players player1, Card card)
@@ -538,10 +597,15 @@ public class BossEffect2 : Effects
 }
 
 public class NoEffect : Effects
-{
-    public override void Action(Players player)
-    {
+
+{   
+
+    public NoEffect(){
         
+      }
+    public override Card Action(Players player)
+    {
+        return null!;
     }
 
     public override void Action(Players player1, Card card)
@@ -557,5 +621,158 @@ public class NoEffect : Effects
     public override Boards.Rows Action2(Players player)
     {
         return 0;
+    }
+
+
+
+}
+
+public class SetIncrease : Effects
+{   
+
+    public SetIncrease(){
+        
+      }
+    public override Card Action(Players player)
+    {
+         return null!;
+    }
+
+    public override void Action(Players player1, Card card)
+    {
+           card.Effect.Action(player1,card);
+        player1.Board.SetCard(card,card.Rows);
+        player1.DeleteCardInHand(card); 
+    }
+
+    public override void Action(Players player1, Players player2, Card card)
+    {
+         
+    }
+
+    public override Boards.Rows Action2(Players player)
+    {
+         return 0;
+    }
+}
+
+public class SetWeather : Effects
+{    
+
+    public SetWeather(){
+        
+      }
+    public override Card Action(Players player)
+    {
+         return null!;
+    }
+
+    public override void Action(Players player1, Card card)
+    {
+           
+    }
+
+    public override void Action(Players player1, Players player2, Card card)
+    {
+          card.Effect.Action(player1,player2,card);
+        player1.Board.SetCard(card,card.Rows);
+        player1.DeleteCardInHand(card);
+    }
+
+    public override Boards.Rows Action2(Players player)
+    {
+         return 0;
+    }
+}
+
+public class IncreasePower : Effects
+{   
+
+    public IncreasePower(){
+        
+      }
+    public override Card Action(Players player)
+    {
+        return null!; 
+    }
+
+    public override void Action(Players player1, Card card)
+    {    
+        int power=0;
+         for(int i=0;i<player1.Board.Length-2;i++){
+             Boards.Rows row= (Boards.Rows)i;
+
+             foreach (Card item in player1.Board[row])
+             {
+                 if(item.Name==card.Name){
+                    power++;
+                 }
+             }
+         } 
+
+             if(card is UnitsCard unitsCard && power!=0) unitsCard.Power*=power;
+    }
+
+    public override void Action(Players player1, Players player2, Card card)
+    {
+         
+    }
+
+    public override Boards.Rows Action2(Players player)
+    {
+         return 0;
+    }
+}
+
+public class Average : Effects
+{   
+
+    public Average(){
+        
+      }
+    public override Card Action(Players player)
+    {
+         int power=0;
+         int countCards=0;
+         int average=0;
+         
+         for(int i=0;i<player.Board.Length-2;i++){
+             Boards.Rows row= (Boards.Rows)i;
+
+             foreach (Card item in player.Board[row])
+             {
+                 if(item is UnitsCard unitsCard){
+                    power+=unitsCard.Power;
+                    countCards++;
+                 }
+             }
+         } 
+         average=power/countCards; 
+          for(int i=0;i<player.Board.Length-2;i++){
+             Boards.Rows row= (Boards.Rows)i;
+
+             foreach (Card item in player.Board[row])
+             {
+                 if(item is UnitsCard unitsCard){
+                     unitsCard.Power=average;
+                 }
+             }
+         } 
+         return null!;  
+    }
+
+    public override void Action(Players player1, Card card)
+    {
+         
+    }
+
+    public override void Action(Players player1, Players player2, Card card)
+    {
+         
+    }
+
+    public override Boards.Rows Action2(Players player)
+    {
+         return 0;
     }
 }

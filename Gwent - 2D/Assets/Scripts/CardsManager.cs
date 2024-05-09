@@ -37,15 +37,19 @@ public class CardsManager : MonoBehaviour
             if(GameManager.Instance.Players[0]!=null){
                 if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[0]){
               CardStar();
-              GameManager.Instance.updateState( GameManager.GameState.Player1Turn);
+              GameManager.Instance.updateState( GameManager.GameState.InitialPlayer1);
 
              } else if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[1]){
               CardStar();
-              GameManager.Instance.updateState( GameManager.GameState.Player2Turn);
+              GameManager.Instance.updateState( GameManager.GameState.InitialPlayer2);
              }
+             EffectManager.Instance.ActiveIncreasePlayer1=new bool[3];
+             EffectManager.Instance.ActiveIncreasePlayer2=new bool[3];
+             EffectManager.Instance.ActiveWeatherPlayer1=new bool[3];
+             EffectManager.Instance.ActiveWeatherPlayer2=new bool[3];
             } else{
               CardStar();
-              GameManager.Instance.updateState( GameManager.GameState.Player1Turn);
+              GameManager.Instance.updateState( GameManager.GameState.InitialPlayer1);
             }
             
             
@@ -107,7 +111,7 @@ public class CardsManager : MonoBehaviour
         
         public void  ChangeCard(GameManager.GameState state)
     {     
-         if(state== GameManager.GameState.Player1Turn){
+         if(state== GameManager.GameState.Player1Turn || state== GameManager.GameState.InitialPlayer1){
            
            if(HandPlayer1.transform.childCount!=0){
                  foreach (Transform card in HandPlayer1.transform)
@@ -154,7 +158,7 @@ public class CardsManager : MonoBehaviour
 
         
         
-         else if(state== GameManager.GameState.Player2Turn){
+         else if(state== GameManager.GameState.Player2Turn|| state== GameManager.GameState.InitialPlayer2){
               
                 if(HandPlayer2.transform.childCount!=0){
                  foreach (Transform card in HandPlayer2.transform)
@@ -195,14 +199,14 @@ public class CardsManager : MonoBehaviour
     } 
 
      public void RemoveCard(GameObject card,GameManager.GameState state){
-        if(state== GameManager.GameState.Player1Turn){
+        if(state== GameManager.GameState.Player1Turn|| state== GameManager.GameState.InitialPlayer1){
             for(int i=0;i<cardsPlayer1.Count;i++){
                if(cardsPlayer1[i].GetComponent<data>().card.Name== card.GetComponent<data>().card.Name){
                  cardsPlayer1.RemoveAt(i);
                  break;
               }
             }
-        } else if( state== GameManager.GameState.Player2Turn){
+        } else if( state== GameManager.GameState.Player2Turn|| state== GameManager.GameState.InitialPlayer2){
             for(int i=0;i<cardsPlayer2.Count;i++){
                if(cardsPlayer2[i].GetComponent<data>().card.Name== card.GetComponent<data>().card.Name){
                  cardsPlayer2.RemoveAt(i);

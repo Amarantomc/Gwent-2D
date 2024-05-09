@@ -17,6 +17,10 @@ public AtackType Atack{get;}
 
 public UnitType Type{get;}
 
+public bool WeatherAfected;
+
+public bool IncreaseAfected;
+
 
     public enum AtackType{
     M, R, S, MR, MS, RS, MRS
@@ -35,6 +39,8 @@ public enum UnitType{
         Atack=atack;
         Type=type;
         Rows=0;
+        WeatherAfected=false;
+        IncreaseAfected=false;
         }
   
 }

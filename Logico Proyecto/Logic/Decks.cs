@@ -20,7 +20,14 @@ public class Decks{
       deck.Add(card);
    } 
     
-   public Card GetCard(int index)=>deck[index];
+   public Card GetCard(int index){
+       if(deck.Count>0){
+         return deck[index];
+       } 
+       return null!;
+       
+   }
+   
    
 
    public void Remove(int index)=>deck.RemoveAt(index);

@@ -11,7 +11,7 @@ namespace Logic;
             {
                 return board[rows];
             }
-           return null;
+           return null!;
         }
     }
       
