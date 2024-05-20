@@ -14,7 +14,7 @@ public class IncreaseButton : MonoBehaviour
 
     private Card card;
     
-    void Onclick(){
+   public void Onclick(){
         
          if(SelectedCard.transform.childCount!=0){
                card=EffectManager.Instance.AuxCard;

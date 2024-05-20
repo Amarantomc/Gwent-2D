@@ -62,7 +62,7 @@ public class Drag : MonoBehaviour
            if(card is UnitsCard unitsCard &&(collision.gameObject.name.Contains(player))){
              
               if(unitsCard.Atack.ToString().Contains(row.ToString())){
-                 
+                 Debug.Log("Entro");
                 isOverZone=true;
                 dropeZone=collision.gameObject;
                 gameObject.GetComponent<data>().card.Rows=row;
@@ -74,53 +74,18 @@ public class Drag : MonoBehaviour
                      
                       isOverZone=true;
                 dropeZone=collision.gameObject;
-                if(collision.gameObject.name.Contains("W1")){
-                    Debug.Log("Entro1");
-                 gameObject.GetComponent<data>().card.Rows=Boards.Rows.M;
-                 if(GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn) EffectManager.Instance.ActiveWeatherPlayer1[0]=true;
-                 else EffectManager.Instance.ActiveWeatherPlayer2[0]=true;
-                }
-                 else if(collision.gameObject.name.Contains("W2")){
-                    gameObject.GetComponent<data>().card.Rows=Boards.Rows.R;
-                     if(GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn) EffectManager.Instance.ActiveWeatherPlayer1[1]=true;
-                 else EffectManager.Instance.ActiveWeatherPlayer2[1]=true;
-                 } 
-                  else if(collision.gameObject.name.Contains("W3")){
-                     gameObject.GetComponent<data>().card.Rows=Boards.Rows.S;
-                     if(GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn) EffectManager.Instance.ActiveWeatherPlayer1[2]=true;
-                 else EffectManager.Instance.ActiveWeatherPlayer2[2]=true;
-                  } 
-
-
-              
+                if(collision.gameObject.name.Contains("W1")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.M;
+                
+                 else if(collision.gameObject.name.Contains("W2"))gameObject.GetComponent<data>().card.Rows=Boards.Rows.R;
+                
+                  else if(collision.gameObject.name.Contains("W3")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.S;
                   }
           }  else  if((card is Increase || card is Lure || card is Clearance) &&(collision.gameObject.name.Contains(player))){
                   if(row!= Boards.Rows.Weather){
                       isOverZone=true;
                       dropeZone=collision.gameObject;
                       gameObject.GetComponent<data>().card.Rows=row;
-                      if(card is Increase){
-                        if(row== Boards.Rows.M && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
-                     EffectManager.Instance.ActiveIncreasePlayer1[0]=true;
-                    
-                     else if(row== Boards.Rows.M) EffectManager.Instance.ActiveIncreasePlayer2[0]=true;
-                     
-                     else if(row== Boards.Rows.R && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
-                     EffectManager.Instance.ActiveIncreasePlayer1[1]=true;
-
-                     else if(row== Boards.Rows.R) EffectManager.Instance.ActiveIncreasePlayer2[1]=true;
-
-                     else if(row== Boards.Rows.S && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
-                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
-                     EffectManager.Instance.ActiveIncreasePlayer1[2]=true;
-
-                     else if(row== Boards.Rows.S) EffectManager.Instance.ActiveIncreasePlayer2[2]=true;
-                      }
+                   
                   }
                   
                    
@@ -157,10 +122,50 @@ public class Drag : MonoBehaviour
         isDraging=false;
        
        if(isOverZone && !isPlacedBefore){
+        Card card=gameObject.GetComponent<data>().card;
+        Boards.Rows row=card.Rows;
         transform.SetParent(dropeZone.transform,false);
         startPos=transform.position; 
          isPlacedBefore=true;
-          
+            if(card is Increase){
+                        if(row== Boards.Rows.M && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveIncreasePlayer1[0]=true;
+                    
+                     else if(row== Boards.Rows.M) EffectManager.Instance.ActiveIncreasePlayer2[0]=true;
+                     
+                     else if(row== Boards.Rows.R && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveIncreasePlayer1[1]=true;
+
+                     else if(row== Boards.Rows.R) EffectManager.Instance.ActiveIncreasePlayer2[1]=true;
+
+                     else if(row== Boards.Rows.S && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveIncreasePlayer1[2]=true;
+
+                     else if(row== Boards.Rows.S) EffectManager.Instance.ActiveIncreasePlayer2[2]=true;
+            } 
+            
+            else    if(card is WeatherCard){
+                        if(row== Boards.Rows.M && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveWeatherPlayer1[0]=true;
+                    
+                     else if(row== Boards.Rows.M) EffectManager.Instance.ActiveWeatherPlayer2[0]=true;
+                     
+                     else if(row== Boards.Rows.R && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveWeatherPlayer1[1]=true;
+
+                     else if(row== Boards.Rows.R) EffectManager.Instance.ActiveWeatherPlayer2[1]=true;
+
+                     else if(row== Boards.Rows.S && (GameManager.Instance.State== GameManager.GameState.InitialPlayer1 ||
+                 GameManager.Instance.State== GameManager.GameState.Player1Turn))
+                     EffectManager.Instance.ActiveWeatherPlayer1[2]=true;
+
+                     else if(row== Boards.Rows.S) EffectManager.Instance.ActiveWeatherPlayer2[2]=true;
+                      }          
          
         GameManager.PlayCard(gameObject);
        

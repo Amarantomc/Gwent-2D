@@ -70,6 +70,40 @@ public class GameBase
 
 
 
+            UnitsCard card41=new UnitsCard("Michael","Rockstar",15,UnitsCard.AtackType.RS,UnitsCard.UnitType.Silver,new DeleteMorePowerCard());
+            UnitsCard card42=new UnitsCard("Franklin","Rockstar",12,UnitsCard.AtackType.MS,UnitsCard.UnitType.Silver,new DeleteLessPowerCard());
+           Clearance card43= new Clearance("Niko Bellic","Rockstar", new DeleteWeather());
+            Clearance card44= new Clearance("Niko Bellic","Rockstar", new DeleteWeather());
+            UnitsCard card45= new UnitsCard("Capo","Rockstar",14, UnitsCard.AtackType.S, UnitsCard.UnitType.Silver,new DeleteCardInGame());
+           Increase card46= new Increase("Squad","Rockstar", new IncreaseRow4());
+            UnitsCard card47=new UnitsCard("RealG","Rockstar",14, UnitsCard.AtackType.S, UnitsCard.UnitType.Silver,new IncreasePower());
+       UnitsCard card48=new UnitsCard("RealG","Rockstar",14, UnitsCard.AtackType.S, UnitsCard.UnitType.Silver,new IncreasePower());
+
+               
+              
+            UnitsCard card49=new UnitsCard("Young Ellie","Naughty Dog",15, UnitsCard.AtackType.M, UnitsCard.UnitType.Silver, new DeleteMorePowerCard());
+            UnitsCard card50=new UnitsCard("Drake","Naughty Dog",16, UnitsCard.AtackType.R, UnitsCard.UnitType.Silver,new DeleteLessPowerCard() );
+           UnitsCard card51=new UnitsCard("Drake","Naughty Dog",16, UnitsCard.AtackType.R, UnitsCard.UnitType.Silver,new DeleteLessPowerCard() );
+            UnitsCard card52=new UnitsCard("Roman","Naughty Dog",12, UnitsCard.AtackType.S, UnitsCard.UnitType.Silver, new Steal() );
+           UnitsCard card53= new UnitsCard("Roman","Naughty Dog",12, UnitsCard.AtackType.S, UnitsCard.UnitType.Silver, new Steal() );
+            UnitsCard card54= new UnitsCard("Chloe","Naughty Dog",14, UnitsCard.AtackType.MS, UnitsCard.UnitType.Silver, new DeleteCardInGame());
+            UnitsCard card55= new UnitsCard("Steve","Naughty Dog",11, UnitsCard.AtackType.MR, UnitsCard.UnitType.Silver,new PlusOne());
+           UnitsCard card56= new UnitsCard("Fox","Naughty Dog",13, UnitsCard.AtackType.RS, UnitsCard.UnitType.Silver, new DeleteLessPowerCard());
+            UnitsCard card57= new UnitsCard("Blonde","Naughty Dog",16, UnitsCard.AtackType.MR, UnitsCard.UnitType.Silver, new Steal());
+             Increase card58= new Increase("Great Squad","Naughty Dog", new IncreaseRow2());
+            Clearance card59= new Clearance("Brave Drake","Naughty Dog",new DeleteWeather());
+           Clearance card60= new Clearance("Brave Drake","Naughty Dog",new DeleteWeather());
+            UnitsCard card61= new UnitsCard("GunMan","Naughty Dog",10, UnitsCard.AtackType.R, UnitsCard.UnitType.Silver,new IncreasePower());
+            UnitsCard card62= new UnitsCard("GunMan","Naughty Dog",10, UnitsCard.AtackType.R, UnitsCard.UnitType.Silver,new IncreasePower());
+
+
+
+
+
+
+
+
+
 
 
 
@@ -78,11 +112,13 @@ public class GameBase
               
 
               Decks deck1 = new Decks(card1,card2,card3,card4,card5,card6, card7, card8,card9,card10,card11,card12,
-              card13,card14,card15,card16,card17,card18,card19, card1,card13,card9,card2,card16,card9,card33,card34,card35,card36,card35,card35 );
+              card13,card14,card15,card16,card17,card18,card19,  card33,card34,card35,card36,card41,card42,card43,
+              card44,card45,card46,card47,card48  );
               
               Decks deck2 = new Decks(card20,card21,card22,card23,card24,card25,card26,card27,card28,card29,card30,card31,card32,
-              card21,card22,card23,card24,card25,card26,card27,card32,card30,card23,card22,card32,card37,card38,card39,card40,card39,card39);
-
+                      card37,card38,card39,card40,card49,card50,card51,card52,card53,card54,card55,card56,card57,card58,card59,card60,
+                      card61,card62 );
+          
               
               player1 = new Players(deck1, board1);
               player2 = new Players(deck2, board2);

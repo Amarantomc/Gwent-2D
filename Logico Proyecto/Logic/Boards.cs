@@ -74,7 +74,7 @@ namespace Logic;
     public void SetCard(Card card, Rows row){
        if(CheckRow(card,row)){
         board[row].Add(card);
-        
+        card.Rows=row;
        }
         
           

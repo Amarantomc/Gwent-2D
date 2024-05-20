@@ -51,145 +51,180 @@ public class EffectManager : MonoBehaviour
             WeatherPanel.Instance.SetCards();
         }
             
-      //   if(card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard ){
-      //       card.Effect.Action(player2);
-      //       Card card1=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
-      //          if(game.State== GameManager.GameState.Player1Turn){
-      //         GameObject row= GameObject.Find(card1.Rows.ToString()+" Player2");
-      //       GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-      //       GameObject graveyard= GameObject.Find("Graveyard Player2");
-      //       destroy.transform.SetParent(graveyard.transform,false);
-      //     }
+        if((card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard) && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2  ){
+           Card card1= card.Effect.Action(player2);
+           if(card1!=null){
+              Card card2=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
+               if(game.State== GameManager.GameState.Player1Turn){
+              GameObject row= GameObject.Find(card2.Rows.ToString()+" Player2");
+            GameObject destroy=row.transform.Find(card2.Name+"(Clone)").gameObject;
+            GameObject graveyard= GameObject.Find("Graveyard Player2");
+             if(graveyard.transform.childCount!=0){
+                Destroy(graveyard.transform.GetChild(0).gameObject);
+                destroy.transform.SetParent(graveyard.transform,false);
+             } else
+            destroy.transform.SetParent(graveyard.transform,false);
+          }
           
           
-      //      else if(game.State== GameManager.GameState.Player2Turn){
-      //          GameObject row= GameObject.Find(card1.Rows.ToString()+" Player1");
-      //       GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-      //       GameObject graveyard= GameObject.Find("Graveyard Player1");
-      //       destroy.transform.SetParent(graveyard.transform,false);
-      //     }
+           else if(game.State== GameManager.GameState.Player2Turn){
+               GameObject row= GameObject.Find(card2.Rows.ToString()+" Player1");
+            GameObject destroy=row.transform.Find(card2.Name+"(Clone)").gameObject;
+            GameObject graveyard= GameObject.Find("Graveyard Player1");
+             if(graveyard.transform.childCount!=0){
+                Destroy(graveyard.transform.GetChild(0).gameObject);
+                destroy.transform.SetParent(graveyard.transform,false);
+             } else
+            destroy.transform.SetParent(graveyard.transform,false);
+          }
+           }
+            
 
             
-      //       } 
+            } 
 
          else if(card.Effect is DeleteCardInGame && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2 ){
          
          PanelForDelete.gameObject.SetActive(true);
          DeletePanel.Instance.SetCards();
-         
-         
+        }
 
-         
-         // Instance.StartCoroutine(Instance.Wait());
-
-         
-          //   card.Effect.Action(player2);
-          //   Card card1=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
-          //     if(State== GameState.Player1Turn){
-          //        GameObject row= GameObject.Find(card1.Rows.ToString()+" Player2");
-          //       GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-          //       GameObject graveyard= GameObject.Find("Graveyard Player2");
-          //        destroy.transform.SetParent(graveyard.transform,false);
-          // }
-            
-            
-          //  else if(State== GameState.Player2Turn){
-          //   GameObject row= GameObject.Find(card1.Rows.ToString()+" Player1");
-          //   GameObject destroy=row.transform.Find(card1.Name+"(Clone)").gameObject;
-          //   GameObject graveyard= GameObject.Find("Graveyard Player1");
-          //   destroy.transform.SetParent(graveyard.transform,false);
-          // } 
-                 
-
-                 
-      //        StartCoroutine(WaitForClick((clickedObject) => {
-      //       // Aquí puedes hacer algo con clickedObject
-      //       Debug.Log("Se hizo clic en " + clickedObject.name);
-             
-             
-
-      //       // Aquí puedes poner el código que quieres que se ejecute después de que se haga clic en un objeto
-      //   }));
-        
-         //   if(card1.GetComponent<data>().card!=null){
-         //        if(card1.GetComponent<data>().card is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
-         //          GameObject graveyard= GameObject.Find("Graveyard Player1");
-         //          card1.transform.SetParent(graveyard.transform,false);
-         //          clickedCard=null;
-                
-         //        } else EffectActivation(card,player1,player2);
-             
-         //    } else EffectActivation(card,player1,player2);
-
-
-         }
-
-         //  else  if(card.Effect is Steal){
-         //        //Devuelve una carta
-         //        card.Effect.Action(player1);
-         //        if(game.State== GameManager.GameState.Player1Turn){
-         //           GameObject hand= GameObject.Find("Hand Player1");
-         //           if(hand.transform.childCount<10){
-         //              foreach (GameObject card1 in CardsManager.Instance.cardsPlayer1)
-         //              {
-         //                if(card1.name== player1.Hand[player1.Hand.Count-1].Name){
-         //                  GameObject card2=Instantiate(card1,new Vector3(0,0,0),Quaternion.identity);
-         //                   card2.transform.SetParent(hand. transform,false);
-         //                   card2.GetComponent<data>().card=player1.Hand[player1.Hand.Count-1];
-         //                   card2.GetComponent<data>().player=player1;
-         //                   CardsManager.Instance.cardsPlayer1.Add(card2);
-         //                  }
-         //              }
-         //           }
-         //        }    else if(game.State== GameManager.GameState.Player2Turn){
-         //           GameObject hand= GameObject.Find("Hand Player2");
-         //           if(hand.transform.childCount<10){
-         //              foreach (GameObject card1 in CardsManager.Instance.cardsPlayer1)
-         //              {
-         //                if(card1.name== player1.Hand[player1.Hand.Count-1].Name){
-         //                  GameObject card2=Instantiate(card1,new Vector3(0,0,0),Quaternion.identity);
-         //                   card2.transform.SetParent(hand. transform,false);
-         //                   card2.GetComponent<data>().card=player1.Hand[player1.Hand.Count-1];
-         //                   card2.GetComponent<data>().player=player1;
-         //                   CardsManager.Instance.cardsPlayer2.Add(card2);
-         //                  }
-         //              }
-         //           }
-         //        } 
-            
-         //    }  else if(card.Effect is DeleteWeather){
-         //       card.Effect.Action(player1,player2,card);
-         //    } 
-         //    else if(card.Effect is PlusOne){
-         //      card.Effect.Action(player1,card);
-         //    }
-         //     else if(card.Effect is IncreaseRow2 || card.Effect is IncreaseRow4){
-         //      card.Effect.Action(player1,card);
-         //     } 
-         //     else if(card.Effect is SetWeather2 || card.Effect is SetWeather4){
-         //      card.Effect.Action(player1,player2,card);
-         //     }
-         //     else if(card.Effect is CleanRow){
-         //       Boards.Rows row= card.Effect.Action2(player2);
-         //       if(game.State==GameManager.GameState.Player1Turn){
-         //         GameObject row2= GameObject.Find(row.ToString()+" Player2");
-         //         GameObject graveyard= GameObject.Find("Graveyard Player2");
-         //          foreach (GameObject card1 in row2.transform )
-         //          {
-         //             card1.transform.SetParent(graveyard.transform,false);
-         //          }
-         //       } else  if(game.State==GameManager.GameState.Player2Turn){
-         //         GameObject row2= GameObject.Find(row.ToString()+" Player1");
-         //         GameObject graveyard= GameObject.Find("Graveyard Player1");
-         //          foreach (GameObject card1 in row2.transform )
-         //          {
-         //             card1.transform.SetParent(graveyard.transform,false);
-         //          }
-         //       }
+          else  if(card.Effect is Steal){
+                 Card card3=card.Effect.Action(player1);
+                 if(card3!=null){
+                     if(game.State== GameManager.GameState.Player1Turn){
+                   GameObject hand= GameObject.Find("Hand Player1");
+                   if(hand.transform.childCount<10){
+                      foreach (GameObject card1 in CardsManager.Instance.prefabs)
+                      {
+                        if(card1.name== card3.Name){
+                           
+                           card1.GetComponent<data>().card=card3;
+                           card1.GetComponent<data>().player=player1;
+                           CardsManager.Instance.cardsPlayer1.Add(card1);
+                           break;
+                          }
+                      }
+                   }
+                }    else if(game.State== GameManager.GameState.Player2Turn){
+                   GameObject hand= GameObject.Find("Hand Player2");
+                   if(hand.transform.childCount<10){
+                      foreach (GameObject card1 in CardsManager.Instance.prefabs)
+                      {
+                        if(card1.name== card3.Name){
+                           
+                           card1.GetComponent<data>().card=card3;
+                           card1.GetComponent<data>().player=player1;
+                           CardsManager.Instance.cardsPlayer2.Add(card1);
+                           break;
+                          }
+                      }
+                   }
+                } 
+                 }
                
-         //     }
-     
             
+            }  else if(card.Effect is DeleteWeather && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+                Boards.Rows row=card.Rows;
+                GameObject weather =GameObject.Find("W1 Player1");
+                if(row == Boards.Rows.M){
+                   if(GameObject.Find("W1 Player1").transform.childCount!=0){
+                     weather=GameObject.Find("W1 Player1").transform.GetChild(0).gameObject;
+                     ActiveWeatherPlayer1[0]=false;
+                   } else if(GameObject.Find("W1 Player2").transform.childCount!=0){
+                     weather=GameObject.Find("W1 Player2").transform.GetChild(0).gameObject;
+                     ActiveWeatherPlayer2[0]=false;
+                   } else weather=null!;
+                }   
+                else if(row == Boards.Rows.R){
+                   if(GameObject.Find("W2 Player1").transform.childCount!=0){
+                     weather=GameObject.Find("W2 Player1").transform.GetChild(0).gameObject;
+                      ActiveWeatherPlayer1[1]=false;
+                   } else if(GameObject.Find("W2 Player2").transform.childCount!=0){
+                     weather=GameObject.Find("W2 Player2").transform.GetChild(0).gameObject;
+                     ActiveWeatherPlayer2[1]=false;
+                   } else weather=null!;
+                } else if(row == Boards.Rows.S){
+                   if(GameObject.Find("W3 Player1").transform.childCount!=0){
+                     weather=GameObject.Find("W3 Player1").transform.GetChild(0).gameObject;
+                      ActiveWeatherPlayer1[2]=false;
+                   } else if(GameObject.Find("W3 Player2").transform.childCount!=0){
+                     weather=GameObject.Find("W3 Player2").transform.GetChild(0).gameObject;
+                     ActiveWeatherPlayer2[2]=false;
+                   } else weather=null!;
+                } 
+                  if(weather!=null){
+                       GameObject graveyard;
+                       if(player1.Board.ContainsCard(weather.GetComponent<data>().card.Rows,weather.GetComponent<data>().card)){
+                           player1.Board.DeleteBoardCard(weather.GetComponent<data>().card.Rows,weather.GetComponent<data>().card);
+                           graveyard=GameObject.Find("Graveyard Player1"); 
+                           if(graveyard.transform.childCount!=0){
+                               Destroy(graveyard.transform.GetChild(0).gameObject);
+                               weather.transform.SetParent(graveyard.transform,false);
+                           } else weather.transform.SetParent(graveyard.transform,false);
+                       } else if(player2.Board.ContainsCard(weather.GetComponent<data>().card.Rows,weather.GetComponent<data>().card)){
+                           player2.Board.DeleteBoardCard(weather.GetComponent<data>().card.Rows,weather.GetComponent<data>().card);
+                           graveyard=GameObject.Find("Graveyard Player2"); 
+                           if(graveyard.transform.childCount!=0){
+                               Destroy(graveyard.transform.GetChild(0).gameObject);
+                               weather.transform.SetParent(graveyard.transform,false);
+                           } else weather.transform.SetParent(graveyard.transform,false);
+                       } 
+                          card.Effect.Action(player1,player2,weather.GetComponent<data>().card);
+
+                  }
+
+
+            } 
+            else if(card.Effect is PlusOne  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+              card.Effect.Action(player1,card);
+            }
+             else if(card.Effect is IncreaseRow2 || card.Effect is IncreaseRow4){
+              card.Effect.Action(player1,card);
+             } 
+             else if(card.Effect is SetWeather2 || card.Effect is SetWeather4){
+              card.Effect.Action(player1,player2,card);
+             } 
+               else if(card.Effect is Average  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+                   card.Effect.Action(player1);
+               }
+                else if(card.Effect is IncreasePower  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+                   card.Effect.Action(player1,card);
+                }
+      
+             else if(card.Effect is CleanRow  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2 ){
+               Boards.Rows row= card.Effect.Action2(player2);
+               if(game.State==GameManager.GameState.Player1Turn){
+                 GameObject row2= GameObject.Find(row.ToString()+" Player2");
+                 GameObject graveyard= GameObject.Find("Graveyard Player2");
+                  foreach (Transform card1 in row2.transform )
+                  {
+                     if(graveyard.transform.childCount==0){
+                     card1.gameObject.transform.SetParent(graveyard.transform,false);
+                     } else{
+                       Destroy( graveyard.transform.GetChild(0).gameObject);
+                       card1.gameObject.transform.SetParent(graveyard.transform,false);
+                     }
+                     
+                  }
+               } else  if(game.State==GameManager.GameState.Player2Turn){
+                 GameObject row2= GameObject.Find(row.ToString()+" Player1");
+                 GameObject graveyard= GameObject.Find("Graveyard Player1");
+                  foreach (Transform card1 in row2.transform )
+                  {
+                        if(graveyard.transform.childCount==0){
+                     card1.gameObject.transform.SetParent(graveyard.transform,false);
+                     } else{
+                       Destroy( graveyard.transform.GetChild(0).gameObject);
+                       card1.gameObject.transform.SetParent(graveyard.transform,false);
+                     }
+                  }
+               }
+               
+             }
+     
+             player1.RefreshPoints();
+             player2.RefreshPoints();
  
 
 
@@ -276,7 +311,7 @@ public class EffectManager : MonoBehaviour
                  for(int i=0;i<increaseRow.transform.childCount;i++){
                      if(increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card is Increase){
                         increaseCard=increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card;
-                        increaseCard.Effect.Action(GameManager.Instance.Players[0],increaseCard);
+                        increaseCard.Effect.Action(GameManager.Instance.Players[1],increaseCard);
                      }
                  }
                } else   if(card.Rows== Boards.Rows.R && ActiveIncreasePlayer2[1]){
@@ -284,7 +319,7 @@ public class EffectManager : MonoBehaviour
                  for(int i=0;i<increaseRow.transform.childCount;i++){
                      if(increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card is Increase){
                         increaseCard=increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card;
-                        increaseCard.Effect.Action(GameManager.Instance.Players[0],increaseCard);
+                        increaseCard.Effect.Action(GameManager.Instance.Players[1],increaseCard);
                      }
                  }
                } else   if(card.Rows== Boards.Rows.S && ActiveIncreasePlayer2[2]){
@@ -292,7 +327,7 @@ public class EffectManager : MonoBehaviour
                  for(int i=0;i<increaseRow.transform.childCount;i++){
                      if(increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card is Increase){
                         increaseCard=increaseRow.transform.GetChild(i).gameObject.GetComponent<data>().card;
-                        increaseCard.Effect.Action(GameManager.Instance.Players[0],increaseCard);
+                        increaseCard.Effect.Action(GameManager.Instance.Players[1],increaseCard);
                      }
                  }
                }

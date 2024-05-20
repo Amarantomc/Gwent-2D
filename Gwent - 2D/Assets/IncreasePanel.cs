@@ -22,14 +22,14 @@ public class IncreasePanel : MonoBehaviour
 
         public void SetCards(){
          if(GameManager.Instance.State == GameManager.GameState.Player1Turn ){
-             GameObject hand= GameObject.Find("Hand Player2");
+             GameObject hand= GameObject.Find("Hand Player1");
                for(int i=0;i<hand.transform.childCount;i++){
                   if(hand.transform.GetChild(i).gameObject.GetComponent<data>().card is Increase){
                     hand.transform.GetChild(i).gameObject.transform.SetParent(AllCards.transform,false);
                   }
                }
-         } else  if(GameManager.Instance.State == GameManager.GameState.InitialPlayer2){
-             GameObject hand= GameObject.Find("Hand Player1");
+         } else  if(GameManager.Instance.State == GameManager.GameState.Player2Turn){
+             GameObject hand= GameObject.Find("Hand Player2");
                for(int i=0;i<hand.transform.childCount;i++){
                   if(hand.transform.GetChild(i).gameObject.GetComponent<data>().card is Increase){
                     hand.transform.GetChild(i).gameObject.transform.SetParent(AllCards.transform,false);

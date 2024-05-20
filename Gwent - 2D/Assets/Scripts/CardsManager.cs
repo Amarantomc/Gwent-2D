@@ -122,12 +122,14 @@ public class CardsManager : MonoBehaviour
            
              foreach (GameObject card in cardsPlayer1 )
              {  
-              
+                if(card!=null){
+
+                
                GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer1.transform,false);
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
-
+               }
              }
                   if(HandPlayer2.transform.childCount==0){
                     for(int i=0;i<10;i++){
@@ -167,11 +169,14 @@ public class CardsManager : MonoBehaviour
                  }
               }
              foreach (GameObject card in cardsPlayer2)
-             {
+             {  
+                 if(card!=null)
+                 { 
                 GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer2.transform,false);
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
+               }
              }
                   if(HandPlayer1.transform.childCount==0){
                     for(int i=0;i<10;i++){

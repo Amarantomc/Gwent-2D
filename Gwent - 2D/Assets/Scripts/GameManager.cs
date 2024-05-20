@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
          } 
           CardsManager.Instance.ChangeCard(state);
          updateDeckButton(state);
-          OnClick.Instance.Onclick();
+           
          break;
        
          case GameState.Player2Turn:
@@ -141,7 +141,8 @@ public class GameManager : MonoBehaviour
         }
          CardsManager.Instance.ChangeCard(state);
          updateDeckButton(state);
-          OnClick.Instance.Onclick();
+         
+           
 
          break;
       
@@ -219,7 +220,7 @@ public class GameManager : MonoBehaviour
             EffectManager.Instance.CheckWeather(card1);
  
           EffectManager.Instance.EffectActivation(card1,Instance.Players[0],Instance.Players[1]);
-         Instance.Players[0].RefreshPoints();
+        // Instance.Players[0].RefreshPoints();
      
     
      if(!Instance.Pass[1]){
@@ -240,7 +241,7 @@ public class GameManager : MonoBehaviour
             EffectManager.Instance.CheckWeather(card1);
              EffectManager.Instance.EffectActivation(card1,Instance.Players[1],Instance.Players[0]);  
 
-          Instance.Players[1].RefreshPoints();
+         // Instance.Players[1].RefreshPoints();
      
      if(!Instance.Pass[0]){
             Instance.RotatePlayer1();

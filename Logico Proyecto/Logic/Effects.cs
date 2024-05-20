@@ -500,27 +500,31 @@ public class CleanRow : Effects
 
     public override Boards.Rows Action2(Players player)
     {
-          Boards.Rows lessRows=0;
-        int less=int.MaxValue;
+        Boards.Rows lessRows=0;
+        int less=400;
+        int count=0;
         for(int i=0;i<player.Board.Length-2;i++){
             Boards.Rows rows= (Boards.Rows)i;
+            count=0;
+              foreach (Card card in player.Board[rows])
+              {
+                 if(card is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+                    count++;
+                 }
+              }
            
-            int count=player.Board[rows].Count;
-           
-            if(count<less){
+            if(count<less && count!=0){
                 less=count;
                 lessRows=rows;
             }
         } 
-
-        foreach (Card card in player.Board[lessRows])
-        {   
-            
-           
-            player.Board.DeleteBoardCard(lessRows,card);
-               
-            
-        }
+         
+         for(int i=0;i<player.Board[lessRows].Count;i++){
+              if(player.Board[lessRows][i]is UnitsCard unitsCard && unitsCard.Type== UnitsCard.UnitType.Silver){
+            player.Board.DeleteBoardCard(lessRows,player.Board[lessRows][i]);
+              }
+         }
+        
         return lessRows;
     }
 }
@@ -544,6 +548,7 @@ public class PlusOne : Effects
         {
             if(card1 is UnitsCard) increase++;
         }
+        
          if(card is UnitsCard unitsCard) unitsCard.Power+=increase;
     }
 
