@@ -62,7 +62,7 @@ public class Drag : MonoBehaviour
            if(card is UnitsCard unitsCard &&(collision.gameObject.name.Contains(player))){
              
               if(unitsCard.Atack.ToString().Contains(row.ToString())){
-                 Debug.Log("Entro");
+                 Debug.Log(".");
                 isOverZone=true;
                 dropeZone=collision.gameObject;
                 gameObject.GetComponent<data>().card.Rows=row;
@@ -71,7 +71,7 @@ public class Drag : MonoBehaviour
               }
           } else if(card is WeatherCard &&(collision.gameObject.name.Contains(player))){
                   if(row == Boards.Rows.Weather){
-                     
+                      Debug.Log(".");
                       isOverZone=true;
                 dropeZone=collision.gameObject;
                 if(collision.gameObject.name.Contains("W1")) gameObject.GetComponent<data>().card.Rows=Boards.Rows.M;
@@ -82,6 +82,7 @@ public class Drag : MonoBehaviour
                   }
           }  else  if((card is Increase || card is Lure || card is Clearance) &&(collision.gameObject.name.Contains(player))){
                   if(row!= Boards.Rows.Weather){
+                      Debug.Log(".");
                       isOverZone=true;
                       dropeZone=collision.gameObject;
                       gameObject.GetComponent<data>().card.Rows=row;

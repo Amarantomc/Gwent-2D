@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
       deck2Button= GameObject.Find("Deck Player2");
       boss1Button=GameObject.Find("CJ");
       boss2Button=GameObject.Find("Joel Miller");
-      currentWinnerPlayer=new Players(new Decks(new WeatherCard("test","test", new NoEffect()),new WeatherCard("test","test", new NoEffect())),new Boards());
+      currentWinnerPlayer=new Players(new Decks(new WeatherCard("test","test", new NoEffect(),null),new WeatherCard("test","test", new NoEffect(),null)),new Boards());
 
       
        

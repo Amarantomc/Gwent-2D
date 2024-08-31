@@ -1,19 +1,57 @@
 namespace Logic;
+ 
 public abstract class Effects{
     public abstract Card Action(Players player);
     public abstract void Action(Players player1,Card card);
     public abstract void Action(Players player1,Players player2,Card card);
     public abstract Boards.Rows Action2(Players player);
 
-
+    
 
    
 
     
 
-} 
- 
+}
 
+public class CompilerEffects<T> : Effects
+{   
+
+    List<(Action,string,bool,Predicate<T>)> Values;
+
+
+    public CompilerEffects( List<(Action, string, bool, Predicate<T>)> values)
+    {
+        Values= new List<(Action, string, bool, Predicate<T>)>();
+        foreach (var item in values)
+        {
+           Values.Add(item);
+           
+        }
+    }
+    public override Card Action(Players player)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Action(Players player1, Card card)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void Action(Players player1, Players player2, Card card)
+    {
+        foreach (var item in Values)
+        {
+            
+        }
+    }
+
+    public override Boards.Rows Action2(Players player)
+    {
+        throw new NotImplementedException();
+    }
+}
 public class Steal:Effects{
 
     
@@ -157,7 +195,7 @@ public class DeleteMorePowerCard : Effects
     public override Card Action(Players player)
     {
         
-    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect());
+    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),null!);
        Boards.Rows maxRow=Boards.Rows.M;
        bool find=false;
         
@@ -209,7 +247,7 @@ public class DeleteLessPowerCard : Effects
     }
     public override Card Action(Players player)
     {
-         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect());
+         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),null!);
        Boards.Rows minRow=Boards.Rows.M;
        bool find=false;
         

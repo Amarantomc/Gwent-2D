@@ -9,13 +9,14 @@ public class Lure : Card
     public override Effects Effect{get;}
 
     public override Boards.Rows Rows{get;set;}
+    public override Players Owner { get ; set ; }
 
-
-    public Lure(string name, string faccion,  Effects effect)
+    public Lure(string name, string faccion,  Effects effect,Players owner)
     {
         Name=name;
         Faccion=faccion;
         Effect=effect;
-        Rows=0;
+        Owner = owner;
+        Rows =0;
     }
 }

@@ -9,14 +9,15 @@ public class Increase : Card
     public override Effects Effect{get;}
 
     public override Boards.Rows Rows{get;set;}
+    public override Players Owner { get ; set ; }
 
-
-    public Increase(string name, string faccion,  Effects effects)
+    public Increase(string name, string faccion,  Effects effects,Players owner)
     {
         Name=name;
         Faccion=faccion;
         Effect=effects;
-        Rows=0;
+        Owner = owner;
+        Rows =0;
          
     }
 }

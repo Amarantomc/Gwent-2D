@@ -10,6 +10,8 @@ public abstract  string Faccion{get;}
 public abstract Effects Effect{get;} 
 
 public abstract Boards.Rows Rows{get;set;}
+
+public abstract Players Owner{get;set;}
    
    
     

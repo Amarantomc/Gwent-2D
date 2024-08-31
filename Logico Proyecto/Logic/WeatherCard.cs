@@ -9,13 +9,15 @@ public class WeatherCard: Card
     public override Effects Effect{get;}
 
     public override Boards.Rows Rows{get;set;}
+    public override Players Owner {  get;set; }
 
-    public WeatherCard (string name, string faccion, Effects effect)
+    public WeatherCard (string name, string faccion, Effects effect,Players owner)
      {
         Name=name;
         Faccion=faccion;
         Effect=effect;
-        Rows=0;
+        Owner = owner;
+        Rows =0;
          
         
      }

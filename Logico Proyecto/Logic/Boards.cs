@@ -37,6 +37,12 @@ namespace Logic;
          
 
     } 
+
+    public IEnumerable<Card> GetValues()
+    {
+         List<Card> result=(List<Card>)board[0].Concat(board[Rows.R]).Concat(board[Rows.S]);
+         return result;
+    }
        
        public  bool CheckRow(Card card, Rows row){
            

@@ -11,13 +11,15 @@ public class BossCard : Card
 
 
     public int Power{get;}
+    public override Players Owner { get ; set ; }
 
-    public BossCard(string name, string faccion, int power, Effects effect)
+    public BossCard(string name, string faccion, int power, Effects effect,Players owner)
     {
         Name=name;
         Faccion=faccion;
         Effect=effect;
-        Power=power;
+        Owner = owner;
+        Power =power;
         Rows=Boards.Rows.Heroe;
         
     }

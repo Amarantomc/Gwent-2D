@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Windows;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,11 +11,16 @@ public class MainMenu : MonoBehaviour
 
      public void ExitButton(){
         EditorApplication.isPlaying = false;
+        
          
      }
 
      public void StartGame(){
         panel.SetActive(true);
          
+     }
+     public void StartCompiler()
+     {
+       SceneManager.LoadScene("Compiler");
      }
 }

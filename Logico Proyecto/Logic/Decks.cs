@@ -27,6 +27,10 @@ public class Decks{
        return null!;
        
    }
+   public List<Card> GetDeck()
+   {
+      return deck;
+   }
    
    
 

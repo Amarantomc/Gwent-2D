@@ -38,20 +38,20 @@ public class EffectManager : MonoBehaviour
       public void EffectActivation(Card card, Players player1, Players player2 ){
         AuxCard=card;
         
-        if(card.Effect is SetLure && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+        if(card.Effect is SetLure &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
            Lure.SetActive(true);
            LurePanel.Instance.CardLoad();
           
            
-        } else if(card.Effect is SetIncrease && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+        } else if(card.Effect is SetIncrease &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
            Increase.SetActive(true);
            IncreasePanel.Instance.SetCards();
-        } else if(card.Effect is SetWeather && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2 ){
+        } else if(card.Effect is SetWeather &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2 ){
             Weather.SetActive(true);
             WeatherPanel.Instance.SetCards();
         }
             
-        if((card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard) && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2  ){
+        if((card.Effect is DeleteMorePowerCard ||card.Effect is DeleteLessPowerCard) &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2  ){
            Card card1= card.Effect.Action(player2);
            if(card1!=null){
               Card card2=player2.Board[Boards.Rows.Graveyard][player2.Board[Boards.Rows.Graveyard].Count-1];
@@ -83,7 +83,7 @@ public class EffectManager : MonoBehaviour
             
             } 
 
-         else if(card.Effect is DeleteCardInGame && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2 ){
+         else if(card.Effect is DeleteCardInGame &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2 ){
          
          PanelForDelete.gameObject.SetActive(true);
          DeletePanel.Instance.SetCards();
@@ -124,7 +124,7 @@ public class EffectManager : MonoBehaviour
                  }
                
             
-            }  else if(card.Effect is DeleteWeather && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+            }  else if(card.Effect is DeleteWeather &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
                 Boards.Rows row=card.Rows;
                 GameObject weather =GameObject.Find("W1 Player1");
                 if(row == Boards.Rows.M){
@@ -176,7 +176,7 @@ public class EffectManager : MonoBehaviour
 
 
             } 
-            else if(card.Effect is PlusOne  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+            else if(card.Effect is PlusOne  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
               card.Effect.Action(player1,card);
             }
              else if(card.Effect is IncreaseRow2 || card.Effect is IncreaseRow4){
@@ -185,14 +185,14 @@ public class EffectManager : MonoBehaviour
              else if(card.Effect is SetWeather2 || card.Effect is SetWeather4){
               card.Effect.Action(player1,player2,card);
              } 
-               else if(card.Effect is Average  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+               else if(card.Effect is Average  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
                    card.Effect.Action(player1);
                }
-                else if(card.Effect is IncreasePower  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2){
+                else if(card.Effect is IncreasePower  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2){
                    card.Effect.Action(player1,card);
                 }
       
-             else if(card.Effect is CleanRow  && GameManager.Instance.State!= GameManager.GameState.InitialPlayer1 && GameManager.Instance.State!= GameManager.GameState.InitialPlayer2 ){
+             else if(card.Effect is CleanRow  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2 ){
                Boards.Rows row= card.Effect.Action2(player2);
                if(game.State==GameManager.GameState.Player1Turn){
                  GameObject row2= GameObject.Find(row.ToString()+" Player2");
