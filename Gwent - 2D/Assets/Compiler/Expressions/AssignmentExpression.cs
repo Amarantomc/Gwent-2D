@@ -3,13 +3,15 @@ using Gwent;
 
 public class  AssignmentExpression : Expressions
 {
-    public override Tokens.TokenType Type => Tokens.TokenType.AssignmentExpression;
+    
 
     public VarExpression Identifier { get; }
     public Tokens Op { get; }
     public Expressions Right { get;set; }
-    public Tokens.TokenType ? DataType{get;set;}
-    private Scope? scope{get;set;}
+   // public Tokens.TokenType ? DataType{get;set;}
+    private Scope scope{get;set;}
+
+    public override Tokens.TokenType Type =>  Tokens.TokenType.AssignmentExpression;
 
     public AssignmentExpression( VarExpression identifier,Tokens op, Expressions right){
         Identifier = identifier;
@@ -17,12 +19,12 @@ public class  AssignmentExpression : Expressions
         Right = right;
         
     }
-    public AssignmentExpression( VarExpression identifier,Tokens op, Expressions right, Tokens.TokenType dataType){
-        Identifier = identifier;
-        Op = op;
-        Right = right;
-        DataType = dataType;
-    }
+    // public AssignmentExpression( VarExpression identifier,Tokens op, Expressions right, Tokens.TokenType dataType){
+    //     Identifier = identifier;
+    //     Op = op;
+    //     Right = right;
+    //     DataType = dataType;
+    // }
 
     public override bool CheckSemantic()
     {
@@ -39,7 +41,7 @@ public class  AssignmentExpression : Expressions
         this.scope=scope;
         CheckSemantic();
         var right=Right.Evaluate(scope);
-        if(FindVar(scope))
+        if(FindVar(scope) )
         {
             
            VarExpression variable=null!;
@@ -47,7 +49,7 @@ public class  AssignmentExpression : Expressions
            if(right is double) variable=new VarExpression(Identifier.Var, Tokens.TokenType.NumberKeyword,right);
            if(right is string) variable=new VarExpression(Identifier.Var, Tokens.TokenType.StringKeyword,right);
            VarExpression var=ReturnVar(scope);
-            if(Op.Type== Tokens.TokenType.Assignment) var.Value=variable!.Value;
+            if(Op.Type== Tokens.TokenType.Assignment|| Op.Type== Tokens.TokenType.TwoDots) var.Value=variable!.Value;
             else if(Op.Type== Tokens.TokenType.PlusEquals && var.Value is double x && variable!.Value is double y)
             {   x+=y;
                 var.Value=x;

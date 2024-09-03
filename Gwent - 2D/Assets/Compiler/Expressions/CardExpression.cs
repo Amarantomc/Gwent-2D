@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Gwent;
 using Logic;
 using Microsoft.Win32.SafeHandles;
@@ -17,7 +18,7 @@ public class CardExpression : Expressions
     public List<Expressions> Range { get; }
     public OnActivationExpression OnActivation { get; }
 
-    private Scope? scope{get;set;}
+    private Scope scope{get;set;}
 
     private string [] types={"Oro","Plata","Lider","Aumento","Clima"};
     
@@ -61,7 +62,7 @@ public class CardExpression : Expressions
               if(Power is null || Power.Evaluate(scope!) is not double x || x<=0) throw new Exception("Power does not exist");
               if(Range.Any()) throw new Exception("Lider do not have Range");
 
-            }
+            } else throw new Exception($"Invalid Card Type {type}");
         } 
           OnActivation.CheckSemantic(scope!);
           return true;
@@ -155,7 +156,7 @@ public class CardExpression : Expressions
                 }
             }
 
-            card=new UnitsCard(name,faction,(int)power,ranged,unitType,new NoEffect(),null);
+            card=new UnitsCard(name,faction,(int)power,ranged,unitType,new NoEffect(),0);
               
          } 
          else if(type=="Clima"|| type=="Aumento")
@@ -176,29 +177,29 @@ public class CardExpression : Expressions
                     break;
                 }
             }
-            if(type=="Clima") card=new WeatherCard(name,faction,new NoEffect(),null);
-            else card=new Increase(name,faction,new NoEffect(),null);
+            if(type=="Clima") card=new WeatherCard(name,faction,new NoEffect(),0);
+            else card=new Increase(name,faction,new NoEffect(),0);
             
 
          } else if(type=="Lider")
          {
-            card=new BossCard(name,faction,0,new NoEffect(),null!);
+            card=new BossCard(name,faction,0,new NoEffect(),0);
          }
          
        
 
-          
-         List<(EffectExpression,SelectorExpression)> aux=(List<(EffectExpression,SelectorExpression)>)OnActivation.Evaluate(scope);
-         List<(Action,(string,bool,Predicate<VarExpression>))> result= new List<(Action,( string, bool, Predicate<VarExpression>))>();
+List<(EffectExpression,SelectorExpression)> aux=(List<(EffectExpression,SelectorExpression)>)OnActivation.Evaluate(scope);
+         List<(string,Action<List<Card>>,string,bool,Predicate<Card>)> result= new List<(string,Action<List<Card>>,string, bool, Predicate<Card>)>();
          
          foreach (var item in aux)
-         {
-            Action action=(Action)item.Item1.Evaluate(scope);
-            (string,bool,Predicate<VarExpression>) selector= ((string, bool, Predicate<VarExpression>))item.Item2.Evaluate(scope);
-            
-            result.Add((action,selector));
+         {  
+             
+            (string,bool,Predicate<Card>) selector= ((string, bool, Predicate<Card>))item.Item2.Evaluate(scope);
+             (string,Action<List<Card>>) effect = ( (string,Action<List<Card>>)) item.Item1.Evaluate(scope);
+           
+            result.Add((effect.Item1,effect.Item2 ,selector.Item1,selector.Item2,selector.Item3));
          }
-        
+                card.Effect=new CompilerEffects(result);
                return card;
          
 

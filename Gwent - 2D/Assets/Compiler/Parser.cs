@@ -36,7 +36,8 @@ public class Parser{
 
          Functions=new List<Tokens.TokenType>{ Tokens.TokenType.DeckOfPlayerKeyword, Tokens.TokenType.FieldOfPlayerKeyword,
                    Tokens.TokenType.FindKeyword, Tokens.TokenType.GraveyardOfPlayerKeyword, Tokens.TokenType.PopKeyword, Tokens.TokenType.PushKeyword,
-                     Tokens.TokenType.RemoveKeyword, Tokens.TokenType.SendBottomKeyword, Tokens.TokenType.ShuffleKeyword, Tokens.TokenType.HandOfPlayerKeyword};
+                     Tokens.TokenType.RemoveKeyword, Tokens.TokenType.SendBottomKeyword, Tokens.TokenType.ShuffleKeyword, Tokens.TokenType.HandOfPlayerKeyword,
+                      Tokens.TokenType.AddKeyword};
          
         
     } 
@@ -664,7 +665,8 @@ public class Parser{
                   if(CurrentToken.Type== Tokens.TokenType.NameKeyword && effect.Name is null)
                   {
                      effect.Name=AssignmentExpressions();
-                  }  if( CurrentToken.Type== Tokens.TokenType.Identifier)
+                  }  
+                  if( CurrentToken.Type== Tokens.TokenType.Identifier)
                   {  
                      effect.Param.Add(AssignmentExpressions());
                      if(CurrentToken.Type== Tokens.TokenType.CloseKey) continue;
@@ -787,7 +789,7 @@ public class Parser{
        SelectorExpression selector=null!;
        List<AssignmentExpression> variable=new List<AssignmentExpression>();
        PostActionExpression postAction= null!;
-       //hacer support pa variables
+       
         while (CurrentToken.Type!= Tokens.TokenType.CloseKey)
         {
             if(CurrentToken.Type== Tokens.TokenType.TypeKeyword && type is null)
@@ -824,7 +826,7 @@ public class Parser{
 
            }
             Match(Tokens.TokenType.CloseKey);
-            return new PostActionExpression(type,selector,postAction);
+            return new PostActionExpression(type,selector,postAction,variable);
     }
     
     private AssignmentExpression AssignmentExpressions()

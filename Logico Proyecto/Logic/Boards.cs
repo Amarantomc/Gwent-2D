@@ -1,5 +1,7 @@
 
-namespace Logic;
+using System.Collections.Generic;
+using System.Linq;
+using Logic;
  public class Boards{
     
      Dictionary<Rows,List<Card>> board;

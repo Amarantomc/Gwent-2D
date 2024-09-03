@@ -14,7 +14,7 @@ public class OnActivationExpression : Expressions
     public OnActivationExpression( List<Statement> statements)
     {
          Statements= new List<Statement>();
-          Copy(Statements,statements);
+         Copy(Statements,statements);
     }
 
     public override bool CheckSemantic()
@@ -29,7 +29,7 @@ public class OnActivationExpression : Expressions
          {
             foreach (var statement in item.Expressions)
             {   
-                if(statement is null) continue;
+               // if(statement is null) continue;
                 if(statement is EffectAssignmentExpression || statement is SelectorExpression || statement is PostActionExpression)
                 {
                      if(statement is EffectAssignmentExpression effectExpression)  effectExpression.CheckSemantic(scope!);
@@ -62,7 +62,7 @@ public class OnActivationExpression : Expressions
             if(statement is SelectorExpression selectorExpression)
             {
                 selector=selectorExpression;
-                continue;
+                
             }
 
             if(effect is not null)

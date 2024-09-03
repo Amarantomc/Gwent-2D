@@ -7,7 +7,7 @@ class UnaryExpression: Expressions{
      
     public Tokens Op { get; }
 
-    private Scope? scope{get;set;}
+    private Scope scope{get;set;}
 
     public UnaryExpression( Tokens op, Expressions right)
     {

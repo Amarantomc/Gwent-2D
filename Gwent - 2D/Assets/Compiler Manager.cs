@@ -24,7 +24,20 @@ public static class CompilerManager
        }
        return Player1;
     }
+   
+   public static Players GetPlayer(int player)
+   {
+      if(player==1) return Player1;
 
+      if(player==2) return Player2;
+      throw new System.Exception("Invalid ID for Player");
+   }
+
+   public static int GetTriggerPlayer()
+   {
+      if(GameManager.Instance.State== GameManager.GameState.Player1Turn) return 1;
+      return 2;
+   }
     public static (List<GameObject> objects, List<Card> cards) GetSource(string source)
     {
        if(GameManager.Instance.State== GameManager.GameState.Player2Turn)

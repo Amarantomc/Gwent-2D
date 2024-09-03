@@ -65,17 +65,20 @@ public class GameManager : MonoBehaviour
     public GameObject InitialTurn;
     public bool initialPlayer1;
 
-    public bool initialPlayer2; 
+    public bool initialPlayer2;
+
+    public bool Start; 
  
     void Awake(){
       Instance=this;
       initialPlayer1=true;
       initialPlayer2=true;
+      Start=true;
       deck1Button=GameObject.Find("Deck Player1");
       deck2Button= GameObject.Find("Deck Player2");
       boss1Button=GameObject.Find("CJ");
       boss2Button=GameObject.Find("Joel Miller");
-      currentWinnerPlayer=new Players(new Decks(new WeatherCard("test","test", new NoEffect(),null),new WeatherCard("test","test", new NoEffect(),null)),new Boards());
+      currentWinnerPlayer=new Players(new Decks(new WeatherCard("test","test", new NoEffect(),0),new WeatherCard("test","test", new NoEffect(),0)),new Boards());
 
       
        
@@ -101,6 +104,7 @@ public class GameManager : MonoBehaviour
          case GameState.InitialPlayer1:
           
          CardsManager.Instance.ChangeCard(state);
+         Start=false;
          initialPlayer1=false;
          InitialTurn.SetActive(true);
          InicialCards.Instance.SetCards();
@@ -110,6 +114,7 @@ public class GameManager : MonoBehaviour
           
          CardsManager.Instance.ChangeCard(state);
          initialPlayer2=false;
+         Start=false;
          InitialTurn.SetActive(true);
          InicialCards.Instance.SetCards();
          break;
@@ -167,14 +172,13 @@ public class GameManager : MonoBehaviour
        
       Pass=new bool[2];
       BossActivation=new bool[2];
-      
-       GameBase run=new GameBase();
-       Players[0]=run.player1;
-       Players[1]=run.player2;
-       Players[0].Points+=30;
-       Players[1].Points+=30;
-       initialPlayer1=true;
-       initialPlayer2=true;
+      PlayerManager.Instance.StartGame();
+      Players[0]=PlayerManager.Instance.Player1;
+      Players[1]= PlayerManager.Instance.Player2;
+      Players[0].Points+=30;
+      Players[1].Points+=30;
+      initialPlayer1=true;
+      initialPlayer2=true;
        
        
         

@@ -25,12 +25,9 @@ public class DotExpression : Expressions
     public override object Evaluate(Scope scope)
     {
         var left=Left.Evaluate(scope);
-        var right=Right.Evaluate(scope);
-        if(left.Equals("context"))
-        {
-            left=CompilerManager.GetPlayer();
-        }
-        return true;
+         var right=Right as FunctionExpression;
+         return right!.Evaluate(scope,left);
+       
          
     }
 }

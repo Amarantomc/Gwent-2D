@@ -10,7 +10,7 @@ public class VarExpression : Expressions
     public Tokens Var { get; }
     public Tokens.TokenType ? DataType{get;}
 
-    public object? Value{get;set;}
+    public object Value{get;set;}
 
     public VarExpression(Tokens var, Tokens.TokenType dataType,object value)
     {
@@ -37,11 +37,11 @@ public class VarExpression : Expressions
 
     public override object Evaluate(Scope scope)
     {
-        if(GetValue(scope, out object? value)) return value!;
+        if(GetValue(scope, out object value)) return (Value is not null)? Value:value!;
         throw new Exception($"{Var.Value} does not exist in the current context");
     }
 
-    private bool GetValue(Scope scope, out object? value)
+    private bool GetValue(Scope scope, out object value)
     {
         if(scope is null) 
         {
@@ -54,9 +54,9 @@ public class VarExpression : Expressions
              {
                 if(item.Var.Value.Equals(Var.Value) && item.Var.Type != Tokens.TokenType.ContextKeyword)
                 {
-                     value=item.Var.Value;
+                     value=item.Value;;
                      return true;
-                } else{
+                } else if(item.Var.Type == Tokens.TokenType.ContextKeyword){
                     value= Tokens.TokenType.ContextKeyword;
                     return true;
                 }

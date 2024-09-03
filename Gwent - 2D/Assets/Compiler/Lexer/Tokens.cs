@@ -1,4 +1,4 @@
-using Gwent;
+   using Gwent;
  
 public class Tokens{
     public string Text { get; }
@@ -263,18 +263,8 @@ public class Tokens{
            case "Siege" :
            return  TokenType.SiegeKeyword;
             
-           case "otherHand" :
-           return  TokenType.otherHandKeyword;
-           case "deck" :
-           return  TokenType.deckKeyword;
-           case "otherDeck" :
-           return  TokenType.otherDeckKeyword;
-           case "field" :
-           return  TokenType.fieldKeyword;
-           case "otherField" :
-           return  TokenType.otherFieldKeyword;
-           case "parent" :
-           return  TokenType.parentKeyword;
+           
+            
   
        default:
            return  TokenType.Identifier;

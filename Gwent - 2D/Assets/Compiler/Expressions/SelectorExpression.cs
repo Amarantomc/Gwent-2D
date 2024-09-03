@@ -2,16 +2,17 @@
 using System;
 using System.Linq;
 using Gwent;
+using Logic;
 
 public class SelectorExpression : Expressions
 {
     public override Tokens.TokenType Type =>  Tokens.TokenType.SelectorExpression;
 
     public AssignmentExpression Source{get;set;}
-    public AssignmentExpression? Single{get;}
-    public LambdaExpression ?Predicate{get;}
+    public AssignmentExpression Single{get;}
+    public LambdaExpression Predicate{get;}
 
-    private Scope? scope{get;set;}
+    private Scope scope{get;set;}
     private string [] source={"hand","otherHand","deck","otherDeck","field","board","otherField","parent"};
 
     public SelectorExpression(AssignmentExpression source, AssignmentExpression single, LambdaExpression predicate)
@@ -60,7 +61,7 @@ public class SelectorExpression : Expressions
     {     
          string source=(string)Source.Evaluate(scope);
          bool single=(Single is null)? false: (bool)Single.Right.Evaluate(scope!);
-         Predicate<VarExpression> predicate= (Predicate<VarExpression>)Predicate!.Evaluate(scope);
+         Predicate<Card> predicate= (Predicate<Card>)Predicate!.Evaluate(scope);
          
 
          return (source,single,predicate);

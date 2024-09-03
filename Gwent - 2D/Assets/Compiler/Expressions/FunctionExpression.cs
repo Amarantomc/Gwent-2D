@@ -1,17 +1,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gwent;
 using Logic;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class FunctionExpression : Expressions
 {
     public override Tokens.TokenType Type => Tokens.TokenType.FunctionExpression;
 
     public Tokens.TokenType FunctionType { get; }
-    public Expressions? Param { get; }
+    public Expressions Param { get; }
 
-    public FunctionExpression( Tokens.TokenType functionType, Expressions ?param)
+    public FunctionExpression( Tokens.TokenType functionType, Expressions param)
     {
         FunctionType = functionType;
         Param = param;
@@ -46,7 +48,7 @@ public class FunctionExpression : Expressions
               if(card is Increase) return "Aumento";
               if(card is BossCard) return "Lider";
             }
-            else if(FunctionType== Tokens.TokenType.OwnerKeyword) return true;//Unity
+            else if(FunctionType== Tokens.TokenType.OwnerKeyword) return card.Owner;
         
         } else if(value is List<Card> cards)
         {
@@ -98,8 +100,31 @@ public class FunctionExpression : Expressions
               }
                else if(FunctionType == Tokens.TokenType.ShuffleKeyword)
                {
-
+                
                }
+        } else if( value is "context")
+        {    
+            if(FunctionType== Tokens.TokenType.BoardKeyword) return CompilerManager.GetPlayer(1).Board.GetValues().Concat(CompilerManager.GetPlayer(2).Board.GetValues());
+            if(FunctionType== Tokens.TokenType.HandKeyword) return CompilerManager.GetPlayer().Hand;
+            if(FunctionType== Tokens.TokenType.DeckKeyword) return CompilerManager.GetPlayer().Deck.GetDeck();
+            if(FunctionType== Tokens.TokenType.GraveyardKeyword) return CompilerManager.GetPlayer().Board[ Boards.Rows.Graveyard];
+            if( FunctionType== Tokens.TokenType.FieldKeyword) return CompilerManager.GetPlayer().Board.GetValues();
+            if(FunctionType== Tokens.TokenType.HandOfPlayerKeyword || FunctionType== Tokens.TokenType.DeckOfPlayerKeyword
+            || FunctionType== Tokens.TokenType.FieldOfPlayerKeyword|| FunctionType== Tokens.TokenType.GraveyardOfPlayerKeyword)
+            {
+               if(Param is not null &&Param is FunctionExpression function && function.Evaluate(scope,value) is double a)
+                {
+                    Players playerParam= CompilerManager.GetPlayer((int)a);
+                    if( FunctionType== Tokens.TokenType.HandOfPlayerKeyword) return playerParam.Hand;
+                    if( FunctionType== Tokens.TokenType.DeckOfPlayerKeyword) return playerParam.Deck.GetDeck();
+                    if( FunctionType== Tokens.TokenType.FieldOfPlayerKeyword) return playerParam.Board.GetValues();
+                    if( FunctionType== Tokens.TokenType.GraveyardOfPlayerKeyword) return playerParam.Board[ Boards.Rows.Graveyard];
+
+
+                } else throw new Exception("Invalid Expression in Dot Expression"); 
+            }
+            if(FunctionType== Tokens.TokenType.TriggerPlayerKeyword) return CompilerManager.GetTriggerPlayer();
+
         }
         return true;
     }

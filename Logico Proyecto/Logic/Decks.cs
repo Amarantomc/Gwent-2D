@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.Xml.Schema;
 
-namespace Logic;
+using Logic;
 
 public class Decks{
 

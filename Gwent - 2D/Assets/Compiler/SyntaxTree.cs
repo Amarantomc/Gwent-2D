@@ -28,12 +28,13 @@ namespace Gwent
             foreach (Expressions item in root)
             {
                 if(item is EffectExpression effect)
+
                 {
                    Context.Effects.Add(effect);
                    continue;
                 }
-
-                var card=item.Evaluate(scope);
+                
+                var card=item.Evaluate(scope.CreateChild());
                 if(card is Card card1) result.Add(card1);
 
             }

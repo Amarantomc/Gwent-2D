@@ -1,4 +1,8 @@
-namespace Logic;
+using Logic;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
  
 public abstract class Effects{
     public abstract Card Action(Players player);
@@ -14,15 +18,15 @@ public abstract class Effects{
 
 }
 
-public class CompilerEffects<T> : Effects
+public class CompilerEffects : Effects
 {   
 
-    List<(Action,string,bool,Predicate<T>)> Values;
+   public List<(string, Action<List<Card>>,string,bool,Predicate<Card>)> Values;
 
 
-    public CompilerEffects( List<(Action, string, bool, Predicate<T>)> values)
+    public CompilerEffects( List<( string,Action<List<Card>>, string, bool, Predicate<Card>)> values)
     {
-        Values= new List<(Action, string, bool, Predicate<T>)>();
+        Values= new List<(string, Action<List<Card>>, string, bool, Predicate<Card>)>();
         foreach (var item in values)
         {
            Values.Add(item);
@@ -195,7 +199,7 @@ public class DeleteMorePowerCard : Effects
     public override Card Action(Players player)
     {
         
-    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),null!);
+    UnitsCard maxPower=new UnitsCard("test","test",0,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),0);
        Boards.Rows maxRow=Boards.Rows.M;
        bool find=false;
         
@@ -247,7 +251,7 @@ public class DeleteLessPowerCard : Effects
     }
     public override Card Action(Players player)
     {
-         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),null!);
+         UnitsCard minPower=new UnitsCard("test","test",100,UnitsCard.AtackType.M ,UnitsCard.UnitType.Silver,new NoEffect(),0);
        Boards.Rows minRow=Boards.Rows.M;
        bool find=false;
         

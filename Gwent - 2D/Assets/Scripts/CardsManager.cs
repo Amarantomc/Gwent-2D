@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Logic;
+using System.Linq;
 
 public class CardsManager : MonoBehaviour
 {   
@@ -27,27 +28,29 @@ public class CardsManager : MonoBehaviour
         GameStar();
     }
 
-    // Update is called once per frame
-    void Update()
-    {    
-        
-    }
+     
        
-            public void GameStar(){
-            if(GameManager.Instance.Players[0]!=null){
-                if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[0]){
-              CardStar();
-              GameManager.Instance.updateState( GameManager.GameState.InitialPlayer1);
+  public void GameStar()
+  {
+    
+    if(GameManager.Instance.Players[0] is not null){
+      if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[0])
+      {
+        CardStar();
+        GameManager.Instance.updateState( GameManager.GameState.InitialPlayer1);
 
-             } else if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[1]){
-              CardStar();
-              GameManager.Instance.updateState( GameManager.GameState.InitialPlayer2);
-             }
-             EffectManager.Instance.ActiveIncreasePlayer1=new bool[3];
-             EffectManager.Instance.ActiveIncreasePlayer2=new bool[3];
-             EffectManager.Instance.ActiveWeatherPlayer1=new bool[3];
-             EffectManager.Instance.ActiveWeatherPlayer2=new bool[3];
-            } else{
+      } 
+      else if( GameManager.Instance.currentWinnerPlayer== GameManager.Instance.Players[1])
+      {
+        CardStar();
+        GameManager.Instance.updateState( GameManager.GameState.InitialPlayer2);
+      }
+             
+      EffectManager.Instance.ActiveIncreasePlayer1=new bool[3];
+      EffectManager.Instance.ActiveIncreasePlayer2=new bool[3];
+      EffectManager.Instance.ActiveWeatherPlayer1=new bool[3];
+      EffectManager.Instance.ActiveWeatherPlayer2=new bool[3];
+      } else{
               CardStar();
               GameManager.Instance.updateState( GameManager.GameState.InitialPlayer1);
             }
@@ -73,30 +76,55 @@ public class CardsManager : MonoBehaviour
         
          //Cargo todas las cartas en los respectivos arrays de jugadores
          for(int i=0;i<player1.Hand.Count;i++){
+            bool find=false;
            for(int j=0;j<prefabs.Length;j++){
              
              if( player1.Hand[i].Name==prefabs[j].name  ){
-              
+                  find=true;
                  cardsPlayer1.Add(prefabs[j]);
                   
                  cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
+                 cardsPlayer1[i].GetComponent<data>().card.Owner=1;
                  cardsPlayer1[i].GetComponent<data>().player=player1;
 
                break;
            }
          } 
+           if(!find)
+           {
+             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
+             cardsPlayer1.Add(cardPrefab);
+             cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
+             cardsPlayer1[i].GetComponent<data>().card.Owner=1;
+
+             cardsPlayer1[i].GetComponent<data>().player=player1;
+
+           }
          }
 
          for(int i=0;i<player2.Hand.Count;i++){
+            bool find=false;
             for(int j=0;j<prefabs.Length;j++){
                if(player2.Hand[i].Name==prefabs[j].name){
                  cardsPlayer2.Add(prefabs[j]);
-                  
+                 find=true; 
                  cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
+                 cardsPlayer1[i].GetComponent<data>().card.Owner=2;
+
                  cardsPlayer2[i].GetComponent<data>().player=player2;
                  break;
                }
             }
+             if(!find)
+           {
+             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
+             cardsPlayer2.Add(cardPrefab);
+             cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
+             cardsPlayer1[i].GetComponent<data>().card.Owner=2;
+
+             cardsPlayer2[i].GetComponent<data>().player=player2;
+
+           }
          }
           
       

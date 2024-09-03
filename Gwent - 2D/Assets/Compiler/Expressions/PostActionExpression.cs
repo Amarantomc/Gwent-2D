@@ -12,10 +12,11 @@ public class PostActionExpression : Expressions
 
     public SelectorExpression Selector{get; set;}
 
-    public PostActionExpression ? Child{get;}
+    public PostActionExpression  Child{get;}
 
-    private Scope? scope{get;set;}
-    //Falta Lista de Assigment Expression
+    public List<AssignmentExpression> Param{get;}
+    private Scope scope{get;set;}
+    
 
      
     public PostActionExpression(Expressions name, SelectorExpression selector)
@@ -30,6 +31,14 @@ public class PostActionExpression : Expressions
         Name = name;
         Selector = selector;
         Child = child;
+    }
+    public PostActionExpression(Expressions name, SelectorExpression selector, PostActionExpression child, List<AssignmentExpression> param)
+    {
+        Name = name;
+        Selector = selector;
+        Child = child;
+        Param=new List<AssignmentExpression>();
+        Copy(Param,param);
     }
 
     public override bool CheckSemantic()
@@ -58,12 +67,14 @@ public class PostActionExpression : Expressions
     public object Evaluate(Scope scope, SelectorExpression parent)
     {
          this.scope=scope;
-         if(Selector is not null && Selector.Source.Evaluate(scope!) is string source && source=="parent")
-         {
-           Selector.Source=parent.Source;
-         }
-         if(Selector is not null) parent=Selector;
-         return GetEffect(this,parent,new List<(EffectExpression,SelectorExpression)>());
+        if (Selector is not null && Selector.Source.Evaluate(scope!) is string source && source == "parent")
+        {
+            Selector.Source = parent.Source;
+        }
+        SelectorExpression selector;
+        if (Selector is not null) selector = Selector;
+        else selector = parent;
+        return GetEffect(this,selector,new List<(EffectExpression,SelectorExpression)>());
 
     }
 
@@ -71,6 +82,34 @@ public class PostActionExpression : Expressions
     {
        var effect=Context.Effects.Find(x=> x.Name.Evaluate(scope!).Equals(postActionExpression.Name.Evaluate(scope!) ));
        if(effect is null) throw new Exception($"Effect {postActionExpression.Name.Evaluate(scope!)} does not exist");
+       if(effect.Params is not null)
+       {
+          foreach (VarExpression item in effect.Params.ParamsStatement.Expressions)
+            {
+              string varName=item.Var.Text;
+              if(Param.Exists(x=>varName==x.Identifier.Var.Text))
+              {
+                AssignmentExpression param=Param.Find(x=>varName==x.Identifier.Var.Text)!;
+                scope.Variables.Add(item);
+                if(item.DataType is null)
+                {
+                    item.Value=param.Right;
+                     
+                } else if(item.DataType is not null)
+                {   
+                    
+                    var right=param.Right.Evaluate(scope!);
+                    if(item.DataType== Tokens.TokenType.NumberKeyword && right is double) item.Value=right;
+                    else if(item.DataType== Tokens.TokenType.BoolKeyword && right is bool) item.Value=right;
+                    else if(item.DataType== Tokens.TokenType.StringKeyword && right is string) item.Value=right;
+                    else throw new Exception($" Cannot convert from {right.GetType()} to {item.DataType}");
+
+                        
+                     
+                }
+              } else throw new Exception($"Missing Param {varName}");
+            }
+       }
        list.Add((effect,parent)); 
        if(postActionExpression.Child is not null) return GetEffect(postActionExpression.Child,parent,list);
        return list;

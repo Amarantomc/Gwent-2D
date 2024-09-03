@@ -20,7 +20,8 @@ public class MainMenu : MonoBehaviour
          
      }
      public void StartCompiler()
-     {
+     { 
+      
        SceneManager.LoadScene("Compiler");
      }
 }

@@ -1,4 +1,4 @@
-namespace Logic;
+using Logic;
 
 public  class  UnitsCard : Card
 {
@@ -7,7 +7,7 @@ public override string Name{get;}
 
 public override string Faccion{get;} 
 
-public override Effects Effect{get;}
+public override Effects Effect{get;set;}
 
 public override Boards.Rows Rows{get;set;}
 
@@ -16,7 +16,7 @@ public int Power{get;set;}
 public AtackType Atack{get;} 
 
 public UnitType Type{get;}
-    public override Players Owner { get ; set ; }
+    public override int Owner { get ; set ; }
 
     public bool WeatherAfected;
 
@@ -31,7 +31,7 @@ public enum UnitType{
     Gold, Silver
 }
     
-   public UnitsCard(string name, string faccion,int power, AtackType atack, UnitType type, Effects effect,Players owner)
+   public UnitsCard(string name, string faccion,int power, AtackType atack, UnitType type, Effects effect,int owner)
     {
         Name=name;
         Faccion=faccion;
