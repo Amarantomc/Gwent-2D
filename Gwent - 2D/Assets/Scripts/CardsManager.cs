@@ -18,6 +18,7 @@ public class CardsManager : MonoBehaviour
      public GameObject[] prefabs;
       public List<GameObject> cardsPlayer1;
       public List<GameObject> cardsPlayer2;
+      Sprite  sprite;
     // Start is called before the first frame update
 
       
@@ -66,7 +67,8 @@ public class CardsManager : MonoBehaviour
        private void CardStar(){
         
 
-           prefabs= Resources.LoadAll<GameObject>("Prefabs");
+          prefabs= Resources.LoadAll<GameObject>("Prefabs");
+          sprite=Resources.Load<Sprite>("Sprites/Default_Personaje_Rick_de_la_serie_animada_Rick_and_Morty_esti_3");
          cardsPlayer1=new List<GameObject>(); 
          cardsPlayer2=new List<GameObject>();
 
@@ -155,6 +157,7 @@ public class CardsManager : MonoBehaviour
                 
                GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer1.transform,false);
+               if(card.gameObject.name.Contains("Compiler")) CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite);
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
                }
@@ -202,6 +205,7 @@ public class CardsManager : MonoBehaviour
                  { 
                 GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer2.transform,false);
+               if(card.gameObject.name.Contains("Compiler")) CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite);
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
                }

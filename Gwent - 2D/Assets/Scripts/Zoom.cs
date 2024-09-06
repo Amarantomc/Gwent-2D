@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ public class Zoom : MonoBehaviour
         card = Instantiate(gameObject,new Vector2(Input.mousePosition.x,Input.mousePosition.y+200),Quaternion.identity);
         card.transform.SetParent(Canvas.transform,false);
         card.layer=LayerMask.NameToLayer("Zoom");
-
+ 
         RectTransform rect=card.GetComponent<RectTransform>();
         rect.sizeDelta=new Vector2(400,350);
     }

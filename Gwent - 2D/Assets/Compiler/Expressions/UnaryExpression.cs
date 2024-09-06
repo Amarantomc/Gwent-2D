@@ -40,29 +40,29 @@ class UnaryExpression: Expressions{
          {  
             double x=Convert.ToDouble(operand);
             VarExpression right=(VarExpression)Right;
-            UpdateVariable(scope, right.Var,1);
-            return x++;  
+            UpdateVariable(scope, right.Var,1.0);
+            return x;  
          }
           if(Op.Type== Tokens.TokenType.MinusMinus && check)
          {  
             double x=Convert.ToDouble(operand);
             VarExpression right=(VarExpression)Right;
-            UpdateVariable(scope, right.Var,-1);
-            return x--; 
+            UpdateVariable(scope, right.Var,-1.0);
+            return x; 
          }
          
          throw new Exception("Problems with UnaryExpression");
 
     }
 
-    private void UpdateVariable(Scope scope, Tokens var, int v)
+    private void UpdateVariable(Scope scope, Tokens var, double v)
     {
          VarExpression var1=scope.Variables.Find(y=> y.Var.Value.Equals(var.Value))!;
          if(var1 is not null)
          {
-            var1.Value=(double) var1.Var.Value +v;
-            int index= scope.Variables.FindIndex(y=> y.Var.Value.Equals(var.Value));
-            scope.Variables[index].Value=var1.Value;
+            var1.Value= ((double)var1.Value) + v;
+           // int index= scope.Variables.FindIndex(y=> y.Var.Value.Equals(var.Value));
+           // scope.Variables[index].Value=var1.Value;
             return;
 
          }

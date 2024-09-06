@@ -134,9 +134,125 @@ public static class CompilerManager
                return (objects,result);
              }
 
+               case "M":
+               {
+                  List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.M])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                 
+                return(objects,result);
+
+               }
+
+               case "R":
+               {
+                   List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.R])
+                  {
+                     if(item is UnitsCard unitsCard &&   unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                   
+                return(objects,result);
+
+               }
+
+               case "S":
+               {
+                   List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.S])
+                  {
+                     if(item is UnitsCard unitsCard &&   unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                   
+                return(objects,result);
+
+               }
+
+               case "MW":
+               {
+                   List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.M])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                   foreach (var item in Player2.Board[Boards.Rows.M])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                  
+                  return(objects,result);
+
+               }
+
+                 case "RW":
+               {
+                    List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.R])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                   foreach (var item in Player2.Board[Boards.Rows.R])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                  
+                  return(objects,result);
+
+               }
+
+                 case "SW":
+               {
+                    List<Card> result=new List<Card>();
+                  foreach (var item in Player1.Board[Boards.Rows.S])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                   foreach (var item in Player2.Board[Boards.Rows.S])
+                  {
+                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     { 
+                        result.Add(item);
+                     }
+                  }
+                  List<GameObject> objects=new List<GameObject>();
+                  
+                  return(objects,result);
+
+               }
             
             default:
-            {
+            { //board
               List<Card> result=Player1.Board.GetValues().ToList().Concat(Player2.Board.GetValues().ToList()).ToList();
               List<GameObject>objects=new List<GameObject>();
               var M=GameObject.Find("M Player1");
@@ -176,5 +292,27 @@ public static class CompilerManager
             } 
         }
         
+    }
+
+    public static void ApplyVisual( List<GameObject> objects, List<Card> cards, string source)
+    {
+        if(source== "board" || source=="field" || source=="otherField")
+        {
+           foreach (var item in objects)
+           {
+              bool find=false;
+              foreach (var card in cards)
+              {
+                 if(card.Name==item.gameObject.GetComponent<data>().card.Name)
+                 {
+                   find=true;
+                   break;
+                 }
+              }
+
+              if(!find) Object.Destroy(item);
+           }
+        }
+        return;
     }
 }

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using Gwent;
 
@@ -43,10 +44,13 @@ public class PostActionExpression : Expressions
 
     public override bool CheckSemantic()
     {
-         if(Name is null || Name.Evaluate(scope!) is not string) throw new Exception("Invalid or Missing Name Expression");
-         if(Selector is not null) Selector.Evaluate(scope!);
-         if(Child is not null) Child.Evaluate(scope!);
-         return true;
+        //  if(Name is null || Name.Evaluate(scope!) is not string) throw new Exception("Invalid or Missing Name Expression");
+        //  if(Selector is not null) Selector.Evaluate(scope!);
+        //  if(Child is not null) Child.Evaluate(scope!);
+         
+        //  return true;
+
+        return true;
     }
 
     public bool CheckSemantic(Scope scope)
@@ -54,14 +58,16 @@ public class PostActionExpression : Expressions
        if(Name is null || Name.Evaluate(scope!) is not string) throw new Exception("Invalid or Missing Name Expression");
          if(Selector is not null) Selector.CheckSemantic(scope!);
          if(Child is not null) Child.CheckSemantic(scope!);
+         foreach (var item in Param)
+         {
+            item.CheckSemantic();
+         }
          return true;  
     }
 
     public override object Evaluate(Scope scope)
     {
-          
-         
-         return 0;
+        return 0;
     }
 
     public object Evaluate(Scope scope, SelectorExpression parent)

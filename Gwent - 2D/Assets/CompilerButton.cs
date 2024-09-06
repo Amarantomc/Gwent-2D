@@ -51,7 +51,7 @@ public class CompilerButton : MonoBehaviour
           catch (System.Exception e)
           {
              Input.textComponent. color=Color.red;
-             Input.textComponent.text=e.ToString();
+             Input.text=e.ToString();
              
           }
         }
@@ -59,7 +59,7 @@ public class CompilerButton : MonoBehaviour
         {
             
              Input.textComponent. color=Color.red;
-             Input.textComponent.text=e.ToString();
+             Input.text=e.ToString();
         }
            Instance=this;
      }

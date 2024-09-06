@@ -40,15 +40,36 @@ public class CompilerEffects : Effects
 
     public override void Action(Players player1, Card card)
     {
-        throw new NotImplementedException();
+        List<Card> result=new List<Card>();
+         foreach(Card card1 in player1.Board[card.Rows]){
+            if(card1 is UnitsCard unitsCard && !unitsCard.IncreaseAfected &&  unitsCard.Type== UnitsCard.UnitType.Silver){
+                 result.Add(unitsCard);
+                unitsCard.IncreaseAfected=true;
+            }
+        } 
+        Values[0].Item2.Invoke(result);
     }
 
     public override void Action(Players player1, Players player2, Card card)
     {
-        foreach (var item in Values)
-        {
-            
+         List<Card> result=new List<Card>();
+          
+         foreach(Card card1 in player1.Board[card.Rows]){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected &&  unitsCard.Type== UnitsCard.UnitType.Silver){
+                 result.Add(unitsCard);
+                unitsCard.WeatherAfected=true;
+            }
+        } 
+         foreach(Card card1 in player2.Board[card.Rows]){
+            if(card1 is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver){
+                result.Add(unitsCard);
+                unitsCard.WeatherAfected=true;
+            }
         }
+         
+
+         
+        Values[0].Item2.Invoke(result);
     }
 
     public override Boards.Rows Action2(Players player)

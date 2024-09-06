@@ -6,6 +6,8 @@ public class  AssignmentExpression : Expressions
     
 
     public VarExpression Identifier { get; }
+
+    public Expressions IdExpression{get;}
     public Tokens Op { get; }
     public Expressions Right { get;set; }
    // public Tokens.TokenType ? DataType{get;set;}
@@ -19,6 +21,13 @@ public class  AssignmentExpression : Expressions
         Right = right;
         
     }
+
+    public AssignmentExpression(Expressions idExpression, Tokens op, Expressions right)
+    {
+        IdExpression = idExpression;
+        Op = op;
+        Right = right;
+    }
     // public AssignmentExpression( VarExpression identifier,Tokens op, Expressions right, Tokens.TokenType dataType){
     //     Identifier = identifier;
     //     Op = op;
@@ -31,6 +40,7 @@ public class  AssignmentExpression : Expressions
          if(Identifier is null ) throw new Exception("Missing Id");
          if(Op.Type== Tokens.TokenType.Assignment && Right is null) throw new Exception("Missing Right Expression ");
          if(Op.Type!= Tokens.TokenType.Assignment && Op.Type!= Tokens.TokenType.TwoDots && !FindVar(scope!)) throw new Exception($"Missing {Identifier.Var.Text}");
+          
          return true;
 
 
@@ -39,6 +49,34 @@ public class  AssignmentExpression : Expressions
     public override object Evaluate(Scope scope)
     {   
         this.scope=scope;
+        
+        if(IdExpression is not null && IdExpression is DotExpression dotExpression && Right.Evaluate(scope)is double f)
+        {
+            if(dotExpression.Right is FunctionExpression functionExpression && functionExpression.FunctionType== Tokens.TokenType.PowerKeyword)
+            {
+                UnitsCard card=(UnitsCard)dotExpression.Left.Evaluate(scope);
+                switch (Op.Type)
+                {
+                   case Tokens.TokenType.PlusEquals:
+                   card.Power+=(int)f;
+                   return f;
+
+                   case Tokens.TokenType.MinusEquals:
+                   card.Power-=(int)f;
+                   return f;
+
+                   case Tokens.TokenType.MullEquals:
+                   card.Power*=(int)f;
+                   return f;
+
+                   case Tokens.TokenType.DivEquals:
+                   card.Power/=(int)f;
+                   return f;
+                    default: throw new Exception($"Invalid Operation between {dotExpression.Right} and {Right}");
+                }
+            } else throw new Exception($"Invalid Operation {dotExpression.Right} cannot be modificate");
+        }
+        
         CheckSemantic();
         var right=Right.Evaluate(scope);
         if(FindVar(scope) )

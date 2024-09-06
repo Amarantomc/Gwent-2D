@@ -31,7 +31,7 @@ public class LambdaExpression : Expressions
 
     public override bool CheckSemantic()
     {
-        throw new NotImplementedException();
+       return true;
     }
     public bool DelegateCheckSemantic(Scope internalScope)
     {
@@ -59,12 +59,13 @@ public class LambdaExpression : Expressions
     public override object Evaluate(Scope scope)
     {    // Devuelve un Action o un Predicate
          this.scope=scope;
-         if(Delegate == Tokens.TokenType.ActionKeyword)
-         {
-            foreach (var item in Variables )
+          foreach (var item in Variables )
             {
                 scope.Variables.Add(item);
             }
+         if(Delegate == Tokens.TokenType.ActionKeyword)
+         {
+           
 
             Action<List<Card>> action=Evaluate;
             
@@ -74,11 +75,7 @@ public class LambdaExpression : Expressions
          if(Delegate == Tokens.TokenType.PredicateKeyword)
          {  
             
-            foreach (var item in Variables)
-            {
-                scope.Variables.Add(item);
-                 
-            }
+            
             Predicate<Card> predicate=Evaluate;
             
             return predicate;

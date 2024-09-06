@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
+using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 public class CardsPanel : MonoBehaviour
 {
@@ -15,15 +21,25 @@ public class CardsPanel : MonoBehaviour
     void Start()
     {    
         prefabCard=Resources.Load("Prefabs/Compiler Show Card") as GameObject;
+        Sprite sprite=Resources.Load<Sprite>("Sprites/Default_Personaje_Rick_de_la_serie_animada_Rick_and_Morty_esti_3");
         foreach (var card in CompilerButton.Instance.Cards)
         {  
             GameObject cardObject = Instantiate(prefabCard,new Vector3(0,0,0),Quaternion.identity);
             cardObject.transform.SetParent(CardPanel.transform,false);
              cardObject.gameObject.GetComponent<data>().card=card;
            
-           foreach (Transform item in cardObject.transform)
-           {  //Falta Effecto
+           SetCompilerCard(cardObject,card,sprite);
+          
+        }
+    }
+
+    public static void SetCompilerCard(GameObject cardObject, Card card,Sprite sprite)
+    {
+         foreach (Transform item in cardObject.transform)
+           {  
              if(item.name== "Name C")  item.gameObject.GetComponent<TMP_Text>().text = card.Name;
+             else if(item.name =="Back") item.gameObject.GetComponent<Image>().sprite=sprite;
+            
              else if(card is UnitsCard unitsCard)
              {
                 if(item.name =="Attack C") item.gameObject.GetComponent<TMP_Text>().text = unitsCard.Atack.ToString();
@@ -50,7 +66,6 @@ public class CardsPanel : MonoBehaviour
             } 
 
            }
-        }
     }
 
      

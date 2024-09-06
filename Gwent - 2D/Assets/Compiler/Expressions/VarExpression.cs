@@ -31,7 +31,7 @@ public class VarExpression : Expressions
     }
 
     public override bool CheckSemantic()
-    {    //DUDA
+    {     
          return true;
     }
 

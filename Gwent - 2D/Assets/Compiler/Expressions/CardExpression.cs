@@ -52,10 +52,14 @@ public class CardExpression : Expressions
                RangeMethod(Range);
             }
             else if(type=="Clima"|| type=="Aumento")
-            {
-                if(Power is not null|| Power!.Evaluate(scope!) is not double x|| x!=0) throw new Exception("This Card do not have");
-                if(Range.Count>3 || !Range.Any() ) throw new Exception("Params Overload or Missing");
-                RangeMethod(Range);
+            {    
+                if(Power is not null)
+                {
+                if( Power!.Evaluate(scope!) is not double x || x!=0) throw new Exception("This Card cannot have Power");
+                
+                }
+                if(Range.Any() ) throw new Exception("This Card cannot have Range");
+                
             }
             else if(type=="Lider")
             {
@@ -161,29 +165,14 @@ public class CardExpression : Expressions
          } 
          else if(type=="Clima"|| type=="Aumento")
          {
-            range=RangeMethod(Range);
-            string auxRange="";
-            if(range[0]) auxRange+="M";
-            if(range[1]) auxRange+="R";
-            if(range[2]) auxRange+="S";
-            //No se que hacer con las filas
-            for(int i=0;i<=6;i++)
-            { 
-                UnitsCard.AtackType atack=(UnitsCard.AtackType)i;
-                if(auxRange==atack.ToString()) 
-
-                {
-                    ranged=atack;
-                    break;
-                }
-            }
             if(type=="Clima") card=new WeatherCard(name,faction,new NoEffect(),0);
             else card=new Increase(name,faction,new NoEffect(),0);
             
 
          } else if(type=="Lider")
-         {
-            card=new BossCard(name,faction,0,new NoEffect(),0);
+         {  
+            power=(double)Power.Evaluate(scope);
+            card=new BossCard(name,faction,(int)power,new NoEffect(),0);
          }
          
        
@@ -194,10 +183,18 @@ List<(EffectExpression,SelectorExpression)> aux=(List<(EffectExpression,Selector
          foreach (var item in aux)
          {  
              
-            (string,bool,Predicate<Card>) selector= ((string, bool, Predicate<Card>))item.Item2.Evaluate(scope);
+            (string,bool,Predicate<Card>) selector=(item.Item2 is not null)? ((string, bool, Predicate<Card>))item.Item2.Evaluate(scope):(null,false,null);
              (string,Action<List<Card>>) effect = ( (string,Action<List<Card>>)) item.Item1.Evaluate(scope);
            
             result.Add((effect.Item1,effect.Item2 ,selector.Item1,selector.Item2,selector.Item3));
+         }
+
+         if(card is WeatherCard || card is Increase)
+         {
+            if(result.Count>1|| result.Count==0) throw new Exception($"{card} only can have one Effect");
+            if(result[0].Item3 is not null) throw new Exception($"{card} cannot have Selector Expression");
+             
+
          }
                 card.Effect=new CompilerEffects(result);
                return card;

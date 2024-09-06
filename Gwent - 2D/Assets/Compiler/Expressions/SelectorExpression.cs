@@ -61,7 +61,7 @@ public class SelectorExpression : Expressions
     {     
          string source=(string)Source.Evaluate(scope);
          bool single=(Single is null)? false: (bool)Single.Right.Evaluate(scope!);
-         Predicate<Card> predicate= (Predicate<Card>)Predicate!.Evaluate(scope);
+         Predicate<Card> predicate= (Predicate is not null) ? (Predicate<Card>)Predicate!.Evaluate(scope):null!;
          
 
          return (source,single,predicate);

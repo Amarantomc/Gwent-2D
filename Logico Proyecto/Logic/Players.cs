@@ -32,9 +32,13 @@ public class Players{
     Rounds=0;
    
      for(int i=0; i<10; i++){
-        int randomNum=GetRandomNum(Deck.Length-1);
-       Hand.Add(Deck.GetCard(randomNum));
-       Deck.Remove(randomNum);
+        Random random=new Random();
+        //int randomNum=GetRandomNum(Deck.Length-1);
+        int randomNum=random.Next(Deck.Length-1);
+        Hand.Add(Deck.GetCard(randomNum));
+        Deck.Remove(randomNum);
+       
+        
        
        
        
@@ -54,7 +58,9 @@ public class Players{
 
     public void InsertCardInHand(){
       
-      int randomNum=GetRandomNum(Deck.Length-1);
+      //int randomNum=GetRandomNum(Deck.Length-1);
+      Random random=new Random();
+      int randomNum=random.Next(Deck.Length-1);
       Card card=Deck.GetCard(randomNum);
       Hand.Add(card);
       Deck.Remove(randomNum);

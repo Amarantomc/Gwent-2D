@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
        
       Pass=new bool[2];
       BossActivation=new bool[2];
-      PlayerManager.Instance.StartGame();
+      //PlayerManager.Instance.StartGame();
       Players[0]=PlayerManager.Instance.Player1;
       Players[1]= PlayerManager.Instance.Player2;
       Players[0].Points+=30;

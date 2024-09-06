@@ -192,7 +192,8 @@ public class EffectManager : MonoBehaviour
                    card.Effect.Action(player1,card);
                 }
       
-             else if(card.Effect is CleanRow  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2 ){
+             else if(card.Effect is CleanRow  &&  !GameManager.Instance.initialPlayer1 && !GameManager.Instance.initialPlayer2 )
+             {
                Boards.Rows row= card.Effect.Action2(player2);
                if(game.State==GameManager.GameState.Player1Turn){
                  GameObject row2= GameObject.Find(row.ToString()+" Player2");
@@ -221,6 +222,45 @@ public class EffectManager : MonoBehaviour
                   }
                }
                
+             } else if(card.Effect is CompilerEffects compilerEffects)
+             {
+                foreach (var item in compilerEffects.Values)
+                {
+                   string source=item.Item3;
+                   if(source is null && card is Increase)
+                   {
+                      if(card.Rows== Boards.Rows.M) source="M";
+                      else if(card.Rows== Boards.Rows.R) source="R";
+                      else if(card.Rows== Boards.Rows.S) source="S";
+                   }
+
+                   else if(source is null && card is WeatherCard )
+                   {
+                      if(card.Rows== Boards.Rows.M) source="MW";
+                      else if(card.Rows== Boards.Rows.R) source="RW";
+                      else if(card.Rows== Boards.Rows.S) source="SW";
+                   }
+                   (List<GameObject>,List<Card>) aux=CompilerManager.GetSource(source);
+                   
+                    for(int i=0;i<aux.Item2.Count;i++)
+                    {
+                      if(item.Item5 is not null &&!item.Item5(aux.Item2[i]))
+                      {
+                        aux.Item2.RemoveAt(i);
+                        aux.Item1.RemoveAt(i);
+                        i--;
+                      } 
+                    }
+                    if(item.Item4) 
+                    {
+                       aux.Item1.RemoveRange(1,aux.Item1.Count);
+                       aux.Item2.RemoveRange(1,aux.Item2.Count);
+                       
+                    }
+
+                    item.Item2.Invoke(aux.Item2);
+                    CompilerManager.ApplyVisual(aux.Item1,aux.Item2,source);
+                }
              }
      
              player1.RefreshPoints();
@@ -239,6 +279,7 @@ public class EffectManager : MonoBehaviour
               if(ActiveWeatherPlayer1[0]){
                weatherRow=GameObject.Find("W1 Player1");
                weatherCard=weatherRow.transform.GetChild(0).gameObject.GetComponent<data>().card;
+                
                weatherCard.Effect.Action(GameManager.Instance.Players[0],GameManager.Instance.Players[1], weatherCard);
               }  
 

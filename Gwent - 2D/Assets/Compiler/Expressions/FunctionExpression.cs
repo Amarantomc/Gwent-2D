@@ -38,7 +38,7 @@ public class FunctionExpression : Expressions
     {
         if(value is Card card)
         {
-            if(FunctionType== Tokens.TokenType.PowerKeyword && card is UnitsCard unitsCard) return unitsCard.Power;
+            if(FunctionType== Tokens.TokenType.PowerKeyword && card is UnitsCard unitsCard) return(double) unitsCard.Power;
             else if(FunctionType== Tokens.TokenType.NameKeyword ) return card.Name;
             else if(FunctionType== Tokens.TokenType.FactionKeyword ) return card.Faccion;
             else if(FunctionType== Tokens.TokenType.RangeKeyword )
@@ -48,7 +48,7 @@ public class FunctionExpression : Expressions
               if(card is Increase) return "Aumento";
               if(card is BossCard) return "Lider";
             }
-            else if(FunctionType== Tokens.TokenType.OwnerKeyword) return card.Owner;
+            else if(FunctionType== Tokens.TokenType.OwnerKeyword) return (double)card.Owner;
         
         } else if(value is List<Card> cards)
         {
@@ -90,9 +90,8 @@ public class FunctionExpression : Expressions
                     List<Card> aux= new List<Card>();
                     foreach (var card1 in cards)
                     {
-                        VarExpression var=lambda.Variables[0];
-                        var.Value=card1;
-                        if(lambda.Evaluate(scope) is Predicate<VarExpression> predicate && predicate.Invoke(var)) aux.Add(card1);
+                         
+                        if(lambda.Evaluate(scope) is Predicate<Card> predicate && predicate.Invoke(card1)) aux.Add(card1);
                     }
                     return aux;
                  }
@@ -102,17 +101,67 @@ public class FunctionExpression : Expressions
                {
                 
                }
+               else if(FunctionType== Tokens.TokenType.AddKeyword)
+               {
+
+               }
         } else if( value is "context")
         {    
-            if(FunctionType== Tokens.TokenType.BoardKeyword) return CompilerManager.GetPlayer(1).Board.GetValues().Concat(CompilerManager.GetPlayer(2).Board.GetValues());
-            if(FunctionType== Tokens.TokenType.HandKeyword) return CompilerManager.GetPlayer().Hand;
-            if(FunctionType== Tokens.TokenType.DeckKeyword) return CompilerManager.GetPlayer().Deck.GetDeck();
-            if(FunctionType== Tokens.TokenType.GraveyardKeyword) return CompilerManager.GetPlayer().Board[ Boards.Rows.Graveyard];
-            if( FunctionType== Tokens.TokenType.FieldKeyword) return CompilerManager.GetPlayer().Board.GetValues();
+            if(FunctionType== Tokens.TokenType.BoardKeyword)
+            {
+                if(Param is not null && Param.Evaluate(scope)is double x)
+                {
+                    int exp=(int)x;
+                    return CompilerManager.GetPlayer(1).Board.GetValues().Concat(CompilerManager.GetPlayer(2).Board.GetValues()).ToList()[exp];
+                } else if(Param is not null && Param.Evaluate(scope) is not double) throw new Exception($"Invalid Expression Inside [] {Param.Evaluate(scope)}");
+                
+             return CompilerManager.GetPlayer(1).Board.GetValues().Concat(CompilerManager.GetPlayer(2).Board.GetValues()).ToList();
+
+            } 
+            if(FunctionType== Tokens.TokenType.HandKeyword)
+            {
+                if(Param is not null && Param.Evaluate(scope) is double x)
+                {
+                    int exp=(int)x;
+                    return CompilerManager.GetPlayer().Hand[exp];
+                } else if(Param is not null && Param.Evaluate(scope) is not double) throw new Exception($"Invalid Expression Inside [] {Param.Evaluate(scope)}");
+                return CompilerManager.GetPlayer().Hand;
+            }
+             
+            if(FunctionType== Tokens.TokenType.DeckKeyword) 
+            {
+                 if(Param is not null && Param.Evaluate(scope) is double x)
+                {
+                    int exp=(int)x;
+                    return   CompilerManager.GetPlayer().Deck.GetDeck()[exp];
+                } else if(Param is not null && Param.Evaluate(scope) is not double) throw new Exception($"Invalid Expression Inside [] {Param.Evaluate(scope)}");
+                 return CompilerManager.GetPlayer().Deck.GetDeck();
+            }
+            
+            if(FunctionType== Tokens.TokenType.GraveyardKeyword) 
+            {
+                 if(Param is not null && Param.Evaluate(scope) is double x)
+                {
+                    int exp=(int)x;
+                    return CompilerManager.GetPlayer().Board[ Boards.Rows.Graveyard][exp];
+                } else if(Param is not null && Param.Evaluate(scope) is not double) throw new Exception($"Invalid Expression Inside [] {Param.Evaluate(scope)}");
+                 return CompilerManager.GetPlayer().Board[ Boards.Rows.Graveyard];
+            }
+             
+            if( FunctionType== Tokens.TokenType.FieldKeyword) 
+            {
+               if(Param is not null && Param.Evaluate(scope) is double x)
+                {
+                    int exp=(int)x;
+                    return CompilerManager.GetPlayer().Board.GetValues()[exp];
+                } else if(Param is not null && Param.Evaluate(scope) is not double) throw new Exception($"Invalid Expression Inside [] {Param.Evaluate(scope)}");
+                 return CompilerManager.GetPlayer().Board.GetValues();   
+            }
+            
             if(FunctionType== Tokens.TokenType.HandOfPlayerKeyword || FunctionType== Tokens.TokenType.DeckOfPlayerKeyword
             || FunctionType== Tokens.TokenType.FieldOfPlayerKeyword|| FunctionType== Tokens.TokenType.GraveyardOfPlayerKeyword)
             {
-               if(Param is not null &&Param is FunctionExpression function && function.Evaluate(scope,value) is double a)
+               if(Param is not null  && Param.Evaluate(scope) is double a)
                 {
                     Players playerParam= CompilerManager.GetPlayer((int)a);
                     if( FunctionType== Tokens.TokenType.HandOfPlayerKeyword) return playerParam.Hand;
@@ -123,7 +172,7 @@ public class FunctionExpression : Expressions
 
                 } else throw new Exception("Invalid Expression in Dot Expression"); 
             }
-            if(FunctionType== Tokens.TokenType.TriggerPlayerKeyword) return CompilerManager.GetTriggerPlayer();
+            if(FunctionType== Tokens.TokenType.TriggerPlayerKeyword) return (double)CompilerManager.GetTriggerPlayer();
 
         }
         return true;

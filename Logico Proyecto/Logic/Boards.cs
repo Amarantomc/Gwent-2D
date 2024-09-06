@@ -40,9 +40,9 @@ using Logic;
 
     } 
 
-    public IEnumerable<Card> GetValues()
+    public List<Card> GetValues()
     {
-         List<Card> result=(List<Card>)board[0].Concat(board[Rows.R]).Concat(board[Rows.S]);
+         List<Card> result=board[0].Concat(board[Rows.R]).Concat(board[Rows.S]).ToList();
          return result;
     }
        

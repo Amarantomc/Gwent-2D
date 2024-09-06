@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Gwent;
  
 public class Parser{ 
@@ -77,11 +78,31 @@ public class Parser{
                {
                  return AssignmentExpressions();
                }
+               else if(LookAhead(1).Type== Tokens.TokenType.Dot)
+               {
+                return Assignment();
+               }
               
                
           }
             return OrExpressions();
        }
+
+
+      private Expressions Assignment()
+      {
+         var left=OrExpressions();
+         
+         while(CurrentToken.Type== Tokens.TokenType.PlusEquals||CurrentToken.Type== Tokens.TokenType.MinusEquals||
+         CurrentToken.Type== Tokens.TokenType.MullEquals||CurrentToken.Type== Tokens.TokenType.DivEquals)
+         {
+           var op=NextToken();
+           var right=OrExpressions();
+           left=new AssignmentExpression(left,op,right);
+         }
+         return left;
+
+      } 
       
         private Expressions OrExpressions()
     {
@@ -189,13 +210,18 @@ public class Parser{
     private Expressions DotExpressions()
     {
        Expressions left=Factor();
-         while (CurrentToken.Type== Tokens.TokenType.Dot)
+         while (CurrentToken.Type== Tokens.TokenType.Dot )
          {
            var op= NextToken();
            var right=Factor();
-
-            
            left=new DotExpression(left,op,right);
+           
+         }
+         if(CurrentToken.Type== Tokens.TokenType.OpenBracket)
+         {
+           var op=NextToken();
+           left=new DotExpression(left,op,Factor());
+           NextToken();
          }
          return left;  
     }
@@ -333,10 +359,19 @@ public class Parser{
                        Match(Tokens.TokenType.CloseParen);
                        return new FunctionExpression(type,body);
                      }
+
+                      if(CurrentToken.Type== Tokens.TokenType.OpenBracket )
+                       {  
+                          NextToken();
+                          var body=OrExpressions();
+                          Match( Tokens.TokenType.CloseBracket);
+                          return new FunctionExpression(type,body);
+                       }
                      return new FunctionExpression(type);
                    }
 
                    Error.ErrorList.Add(new Error(Error.ErrorType.Syntax,CurrentToken.Position,"Unexcpedted token "+CurrentToken.Text));
+                   NextToken();
                    return null!;
                    
                  
@@ -701,6 +736,7 @@ public class Parser{
              } 
                
                if(CurrentToken.Type== Tokens.TokenType.Coma) NextToken();
+                
             } 
               Match(Tokens.TokenType.CloseKey);
               if(CurrentToken.Type== Tokens.TokenType.Coma) NextToken();
