@@ -34,12 +34,26 @@ public class PlayerManager : MonoBehaviour
          Player1=game.player1;
          Player2=game.player2;
       foreach (var item in CompilerCardsPlayer1)
-      {
-        Player1.Deck.Insert(item);
+      { 
+        if(item is BossCard)
+        {
+          var card=Player1.Board.GetBoardCard(Boards.Rows.Heroe,0);
+          Player1.Board.DeleteBoardCard(Boards.Rows.Heroe,card);
+          Player1.Board.SetCard(item, Boards.Rows.Heroe);
+        } 
+         Player1.Deck.Insert(item);
+         
       }
       foreach (var item in CompilerCardsPlayer2)
       {
+        if(item is BossCard)
+        {
+          var card=Player2.Board.GetBoardCard(Boards.Rows.Heroe,0);
+          Player2.Board.DeleteBoardCard(Boards.Rows.Heroe,card);
+          Player2.Board.SetCard(item, Boards.Rows.Heroe);
+        }   
         Player2.Deck.Insert(item);
+       
       }
     }
 

@@ -1,0 +1,40 @@
+effect 
+                {
+                Name: "Weather",
+                Params: {
+                Amount: Number
+  
+                },
+                Action: (targets,context) => {
+                 for target in targets {
+                      target.Power-=Amount;           
+
+                };
+                }
+                } 
+
+ 
+
+
+
+card 
+                {
+                Type: "Clima" ,
+                Name: "Beluga",
+                Power: 0 ,
+                Faction: "Pokemon" ,
+                
+                OnActivation: 
+                [
+                {
+                Effect:
+                {
+                Name: "Weather" ,
+                Amount: 2 ,
+                },
+                
+                 
+                }
+                  
+                ]
+                }

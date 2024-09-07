@@ -6504,6 +6504,7 @@ MonoBehaviour:
   InitialTurn: {fileID: 2095001809}
   initialPlayer1: 0
   initialPlayer2: 0
+  Start: 0
 --- !u!114 &1109614784
 MonoBehaviour:
   m_ObjectHideFlags: 0

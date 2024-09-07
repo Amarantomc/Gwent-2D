@@ -172,11 +172,11 @@ public class GameManager : MonoBehaviour
        
       Pass=new bool[2];
       BossActivation=new bool[2];
-      //PlayerManager.Instance.StartGame();
+      PlayerManager.Instance.StartGame();
       Players[0]=PlayerManager.Instance.Player1;
       Players[1]= PlayerManager.Instance.Player2;
-      Players[0].Points+=30;
-      Players[1].Points+=30;
+      Players[0].Points+= ((BossCard)Players[0].Board.GetBoardCard( Boards.Rows.Heroe,0)).Power;
+      Players[1].Points+=((BossCard)Players[1].Board.GetBoardCard( Boards.Rows.Heroe,0)).Power;
       initialPlayer1=true;
       initialPlayer2=true;
        
@@ -209,15 +209,14 @@ public class GameManager : MonoBehaviour
 
      }
 
-    public static void PlayCard(GameObject card){
+    public static void PlayCard(GameObject card)
+    {
          Card card1=card.GetComponent<data>().card;
            
          
          if(Instance.State==GameState.Player1Turn){
             Instance.Players[0].Board.SetCard(card1,card1.Rows);
             Instance.Players[0].DeleteCardInHand(card1);
-            
-            
             
             CardsManager.Instance.RemoveCard(card, GameState.Player1Turn);
             EffectManager.Instance.CheckIncrease(card1);

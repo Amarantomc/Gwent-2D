@@ -139,7 +139,7 @@ public static class CompilerManager
                   List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.M])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.IncreaseAfected &&  unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
@@ -155,7 +155,7 @@ public static class CompilerManager
                    List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.R])
                   {
-                     if(item is UnitsCard unitsCard &&   unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.IncreaseAfected &&  unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
@@ -171,7 +171,7 @@ public static class CompilerManager
                    List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.S])
                   {
-                     if(item is UnitsCard unitsCard &&   unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard &&  !unitsCard.IncreaseAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
@@ -187,14 +187,14 @@ public static class CompilerManager
                    List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.M])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
                   }
                    foreach (var item in Player2.Board[Boards.Rows.M])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
@@ -210,14 +210,14 @@ public static class CompilerManager
                     List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.R])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
                   }
                    foreach (var item in Player2.Board[Boards.Rows.R])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
@@ -233,14 +233,14 @@ public static class CompilerManager
                     List<Card> result=new List<Card>();
                   foreach (var item in Player1.Board[Boards.Rows.S])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }
                   }
                    foreach (var item in Player2.Board[Boards.Rows.S])
                   {
-                     if(item is UnitsCard unitsCard &&  unitsCard.Type== UnitsCard.UnitType.Silver)
+                     if(item is UnitsCard unitsCard && !unitsCard.WeatherAfected && unitsCard.Type== UnitsCard.UnitType.Silver)
                      { 
                         result.Add(item);
                      }

@@ -78,6 +78,7 @@ public class OnActivationExpression : Expressions
             }
 
          }
+         if(effect is not null) result.Add((effect,null!));
        }
          return result;
        

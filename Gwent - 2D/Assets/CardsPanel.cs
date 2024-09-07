@@ -21,14 +21,17 @@ public class CardsPanel : MonoBehaviour
     void Start()
     {    
         prefabCard=Resources.Load("Prefabs/Compiler Show Card") as GameObject;
-        Sprite sprite=Resources.Load<Sprite>("Sprites/Default_Personaje_Rick_de_la_serie_animada_Rick_and_Morty_esti_3");
+        Sprite [] sprite=Resources.LoadAll<Sprite>("Sprites");
+         int index=0;
         foreach (var card in CompilerButton.Instance.Cards)
         {  
             GameObject cardObject = Instantiate(prefabCard,new Vector3(0,0,0),Quaternion.identity);
             cardObject.transform.SetParent(CardPanel.transform,false);
              cardObject.gameObject.GetComponent<data>().card=card;
            
-           SetCompilerCard(cardObject,card,sprite);
+           SetCompilerCard(cardObject,card,sprite[index]);
+           index++;
+           if(index>sprite.Length) index=0;
           
         }
     }
@@ -60,9 +63,11 @@ public class CardsPanel : MonoBehaviour
             {
                 if(item.name =="Type C")  item.gameObject.GetComponent<TMP_Text>().text ="Aumento"; 
             }  
-            else if( card is BossCard)
+            else if( card is BossCard bossCard)
             {
                 if(item.name =="Type C")  item.gameObject.GetComponent<TMP_Text>().text ="Lider"; 
+                else if(item.name =="Power")  item.GetChild(0).gameObject.GetComponent<TMP_Text>().text = bossCard.Power.ToString();
+
             } 
 
            }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Logic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class CardsManager : MonoBehaviour
 {   
@@ -18,7 +19,7 @@ public class CardsManager : MonoBehaviour
      public GameObject[] prefabs;
       public List<GameObject> cardsPlayer1;
       public List<GameObject> cardsPlayer2;
-      Sprite  sprite;
+      Sprite [] sprite;
     // Start is called before the first frame update
 
       
@@ -68,13 +69,68 @@ public class CardsManager : MonoBehaviour
         
 
           prefabs= Resources.LoadAll<GameObject>("Prefabs");
-          sprite=Resources.Load<Sprite>("Sprites/Default_Personaje_Rick_de_la_serie_animada_Rick_and_Morty_esti_3");
+          sprite=Resources.LoadAll<Sprite>("Sprites");
          cardsPlayer1=new List<GameObject>(); 
          cardsPlayer2=new List<GameObject>();
 
         GameManager.Instance.updateState(GameManager.GameState.Start);
          player1=GameManager.Instance.Players[0];
          player2=GameManager.Instance.Players[1];
+
+          //Busco Primero que el deck contenga un Lider y lo cambio
+         int index=0;
+         int pos=0;
+         foreach (var item in player1.Deck.GetDeck())
+         {  
+             
+            if(item is BossCard)
+            {  
+               
+              
+               GameObject heroe=  GameObject.Find("Heroe Player1");
+               Destroy(heroe.gameObject.transform.GetChild(0));
+               var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler BossCard");
+               GameObject card1=Instantiate(cardPrefab,new Vector3(0,0,0),Quaternion.identity);
+               card1.transform.SetParent(heroe.transform,false);
+               CardsPanel.SetCompilerCard(card1,item,sprite[pos]);
+               pos++;
+               card1.GetComponent<data>().card=item;
+               card1.GetComponent<data>().player=player1;
+               card1.GetComponent<data>().card.Owner=1;
+               player1.Deck.Remove(index);
+               if(pos>sprite.Length) pos=0;
+               break;
+
+               
+            }
+            index++;
+         }
+            
+            index=0;
+            pos=0;
+            foreach (var item in player2.Deck.GetDeck())
+         {
+            if(item is BossCard)
+            {  
+              
+               GameObject heroe=  GameObject.Find("Heroe Player2");
+               Destroy(heroe.gameObject.transform.GetChild(0));
+               var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler BossCard");
+               GameObject card1=Instantiate(cardPrefab,new Vector3(0,0,0),Quaternion.identity);
+               card1.transform.SetParent(heroe.transform,false);
+               CardsPanel.SetCompilerCard(card1,item,sprite[pos]);
+               pos++;
+               card1.GetComponent<data>().card=item;
+               card1.GetComponent<data>().player=player2;
+               card1.GetComponent<data>().card.Owner=2;
+               player2.Deck.Remove(index);
+                if(pos>sprite.Length) pos=0;
+               break;
+
+               
+            }
+            index++;
+         }
         
          //Cargo todas las cartas en los respectivos arrays de jugadores
          for(int i=0;i<player1.Hand.Count;i++){
@@ -149,17 +205,28 @@ public class CardsManager : MonoBehaviour
                   Destroy(card.gameObject);
                  }
               }
-           
+               
+               int index=0;
              foreach (GameObject card in cardsPlayer1 )
              {  
-                if(card!=null){
+                if(card!=null)
+                {
 
                 
                GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer1.transform,false);
-               if(card.gameObject.name.Contains("Compiler")) CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite);
+               
+           
+               if(card.gameObject.name.Contains("Compiler"))
+               {
+                  CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite[index]);
+                  index++;
+               }
+                
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
+               card1.GetComponent<data>().card.Owner=1;
+               if(index>sprite.Length) index=0;
                }
              }
                   if(HandPlayer2.transform.childCount==0){
@@ -198,16 +265,24 @@ public class CardsManager : MonoBehaviour
                  {
                   Destroy(card.gameObject);
                  }
-              }
+              } 
+                int index=0;
              foreach (GameObject card in cardsPlayer2)
              {  
                  if(card!=null)
                  { 
+                   
                 GameObject card1=Instantiate(card,new Vector3(0,0,0),Quaternion.identity);
                card1.transform.SetParent(HandPlayer2.transform,false);
-               if(card.gameObject.name.Contains("Compiler")) CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite);
+               if(card.gameObject.name.Contains("Compiler"))
+               {
+                  CardsPanel.SetCompilerCard(card1,card.GetComponent<data>().card,sprite[index]);
+                  index++;
+               } 
                card1.GetComponent<data>().card=card.GetComponent<data>().card;
                card1.GetComponent<data>().player=card.GetComponent<data>().player;
+                card1.GetComponent<data>().card.Owner=2;
+                 if(index>sprite.Length) index=0;
                }
              }
                   if(HandPlayer1.transform.childCount==0){

@@ -1,0 +1,40 @@
+effect 
+                {
+                Name: "Increase",
+                Params: {
+                Amount: Number
+  
+                },
+                Action: (targets,context) => {
+                 for target in targets {
+                      target.Power+=Amount;           
+
+                };
+                }
+                } 
+
+ 
+
+
+
+card 
+                {
+                Type: "Aumento" ,
+                Name: "Beluga",
+                Power: 0 ,
+                Faction: "Pokemon" ,
+                
+                OnActivation: 
+                [
+                {
+                Effect:
+                {
+                Name: "Increase" ,
+                Amount: 2 ,
+                },
+                
+                 
+                }
+                  
+                ]
+                }

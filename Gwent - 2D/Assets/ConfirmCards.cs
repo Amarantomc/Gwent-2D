@@ -19,8 +19,8 @@ public class ConfirmCards : MonoBehaviour
             {
                  item.gameObject.GetComponent<data>().card.Owner=1;
                 PlayerManager.Instance.CompilerCardsPlayer1.Add(item.gameObject.GetComponent<data>().card);
-                PlayerManager.Instance.Player1.Hand.RemoveAt(0);
-                PlayerManager.Instance.Player1.Hand.Add(item.gameObject.GetComponent<data>().card);
+                //PlayerManager.Instance.Player1.Hand.RemoveAt(0);
+                //PlayerManager.Instance.Player1.Hand.Add(item.gameObject.GetComponent<data>().card);
             }
         }
 

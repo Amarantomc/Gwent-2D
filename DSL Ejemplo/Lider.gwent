@@ -1,0 +1,47 @@
+effect 
+                {
+                Name: "Sum",
+                Params: {
+                Amount: Number
+  
+                },
+                Action: (targets,context) => {
+                 for target in targets {
+                      target.Power+=Amount;           
+
+                };
+                }
+                } 
+
+ 
+
+
+
+card 
+                {
+                Type: "Lider" ,
+                Name: "Travis",
+                Power: 20 ,
+                Faction: "Rockstar" ,
+                
+                OnActivation: 
+                [
+                {
+                Effect:
+                {
+                Name: "Sum" ,
+                Amount: 2 ,
+                },
+	    
+	     Selector : 
+            {
+               Source: "field" ,
+	     Single: false ,
+	    Predicate: (unit) => true
+             }
+                
+                 
+                }
+                  
+                ]
+                }

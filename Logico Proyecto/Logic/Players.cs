@@ -73,6 +73,7 @@ public class Players{
     public void RefreshPoints(){
      
      int newPoints=0;
+     int BossPoints=((BossCard)Board.GetBoardCard(Boards.Rows.Heroe,0)).Power;
 
      for(int i=0;i<Board.Length-2;i++){
         
@@ -85,7 +86,7 @@ public class Players{
          }
       }
      } 
-     Points=newPoints+30;
+     Points=newPoints+BossPoints;
      
      
     }
