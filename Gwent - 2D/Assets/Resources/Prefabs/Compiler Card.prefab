@@ -421,9 +421,9 @@ GameObject:
   - component: {fileID: 621327061397365976}
   - component: {fileID: 3367559902573720731}
   - component: {fileID: 6593531631380695577}
-  - component: {fileID: 6825780196067301388}
   - component: {fileID: 2436555083747215505}
   - component: {fileID: 1125998054962776455}
+  - component: {fileID: 2503862931329135729}
   m_Layer: 0
   m_Name: Compiler Card
   m_TagString: Untagged
@@ -527,8 +527,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 6825780196067301388}
-          m_TargetAssemblyTypeName: Zoom, Assembly-CSharp
+        - m_Target: {fileID: 2503862931329135729}
+          m_TargetAssemblyTypeName: SpecialZoom, Assembly-CSharp
           m_MethodName: OffZoom
           m_Mode: 1
           m_Arguments:
@@ -559,8 +559,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6825780196067301388}
-          m_TargetAssemblyTypeName: Zoom, Assembly-CSharp
+        - m_Target: {fileID: 2503862931329135729}
+          m_TargetAssemblyTypeName: SpecialZoom, Assembly-CSharp
           m_MethodName: OffZoom
           m_Mode: 1
           m_Arguments:
@@ -575,8 +575,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6825780196067301388}
-          m_TargetAssemblyTypeName: Zoom, Assembly-CSharp
+        - m_Target: {fileID: 2503862931329135729}
+          m_TargetAssemblyTypeName: SpecialZoom, Assembly-CSharp
           m_MethodName: OnZoom
           m_Mode: 1
           m_Arguments:
@@ -672,18 +672,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 7
---- !u!114 &6825780196067301388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2484014642664565818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d8935ef3f13c68448f731f72cf08731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2436555083747215505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,6 +694,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47bdd9d03ce2f8e469894cd65f50417b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2503862931329135729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2484014642664565818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813421418ed0c284cac7e3ad3a5d2c1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3744592514632315571

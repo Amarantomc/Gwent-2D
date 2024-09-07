@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gwent;
 
 public class  AssignmentExpression : Expressions
@@ -118,7 +119,9 @@ public class  AssignmentExpression : Expressions
                 if(right is double) scope.Variables.Add(new VarExpression(Identifier.Var, Tokens.TokenType.Number,right));
                else if(right is string) scope.Variables.Add(new VarExpression(Identifier.Var, Tokens.TokenType.StringKeyword,right));
                 else if(right is bool) scope.Variables.Add(new VarExpression(Identifier.Var, Tokens.TokenType.BoolKeyword,right));
-                 
+                else if(right is List<Card>) scope.Variables.Add(new VarExpression(Identifier.Var, Tokens.TokenType.String,right));
+                else if(right is Card) scope.Variables.Add(new VarExpression(Identifier.Var, Tokens.TokenType.String,right));
+
 
             } else throw new Exception($"Invalid Assignment Expression for {Identifier.Var.Text}");
         }
