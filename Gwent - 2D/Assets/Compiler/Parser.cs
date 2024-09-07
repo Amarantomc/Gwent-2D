@@ -548,9 +548,12 @@ public class Parser{
              while (CurrentToken.Type!= Tokens.TokenType.CloseKey)
              {   //comprobar para cambiar a statment
                 body.Add(ParseGlobalExpresion());
-                var key=Match(Tokens.TokenType.CloseKey);
-                if(key is null) break;
+                //var key=Match(Tokens.TokenType.CloseKey);
+                //if(key is null) break;
+                if(CurrentToken.Type== Tokens.TokenType.EOF) NextToken();
+                if(CurrentToken.Type== Tokens.TokenType.CloseKey) continue;
              }
+             Match(Tokens.TokenType.CloseKey);
 
               
           } else 

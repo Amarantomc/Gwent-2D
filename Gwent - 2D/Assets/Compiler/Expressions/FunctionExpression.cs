@@ -5,6 +5,8 @@ using System.Linq;
 using Gwent;
 using Logic;
 using Unity.VisualScripting.Dependencies.Sqlite;
+using UnityEngine;
+using Random = System.Random;
 
 public class FunctionExpression : Expressions
 {
@@ -99,11 +101,26 @@ public class FunctionExpression : Expressions
               }
                else if(FunctionType == Tokens.TokenType.ShuffleKeyword)
                {
-                
+                   Random rnd = new Random();
+                   int n = cards.Count;
+
+                   for (int i = n - 1; i > 0; i--)
+                  {
+                  int j = rnd.Next(0, i + 1);
+             
+                   Card temp = cards[i];
+                  cards[i] = cards[j];
+                      cards[j] = temp;
+                 }
+                  return cards;
                }
                else if(FunctionType== Tokens.TokenType.AddKeyword)
                {
-
+                    if(Param is null || Param.Evaluate(scope) is not Card) throw new Exception("Missing Card to Add");
+                    Card card1=Param.Evaluate(scope) as Card;
+                    cards.Add(card1);
+                    return card1;
+                    
                }
         } else if( value is "context")
         {    

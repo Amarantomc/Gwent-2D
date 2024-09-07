@@ -49,7 +49,7 @@ public class LambdaExpression : Expressions
     { 
         if (internalScope is null) return true; 
             
-             if (internalScope!.Variables.Exists(x=> x.Var.Value.ToString()== name))
+             if (internalScope!.Variables.Exists(x=> x.Var.Value.ToString()== name) && name!="targets" && name!="context")
             {
                 throw new Exception($"Variable {name} was defined already");
             }
