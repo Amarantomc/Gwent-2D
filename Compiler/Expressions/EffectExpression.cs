@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using Gwent;
 
 public class EffectExpression : Expressions
@@ -9,7 +10,7 @@ public class EffectExpression : Expressions
     public Expressions Name { get; }
     public ActionExpression Action { get; }
     public ParamsExpression Params { get; }
-    private Scope? scope{get;set;}
+    private Scope scope{get;set;}
 
     public EffectExpression(Expressions name, ActionExpression action, ParamsExpression Params)
     {
@@ -43,6 +44,6 @@ public class EffectExpression : Expressions
          CheckSemantic();
          if(Params is not null) Params.Evaluate(scope!);
          
-         return Action.Evaluate(scope!);
+         return ((string)Name.Evaluate(scope),(Action<List<Card>>) Action.Evaluate(scope!)); 
     }
 }

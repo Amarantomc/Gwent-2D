@@ -22,7 +22,7 @@ public class ForExpression : Expressions
     {
          Scope statmentScope=scope.CreateChild();
          int i=0;
-         if(Condition!.Evaluate(scope)is not bool condition) throw new Exception("Invalid or Missing Expression");
+         scope.Variables.Add(Condition.Var);
           
         while ( Condition!.Evaluate(scope,i)is bool exp && exp)
             {

@@ -31,15 +31,14 @@ public class WhileExpression : Expressions
     public override object Evaluate(Scope scope)
     {
          Scope scopeStatment=scope.CreateChild();
-         if(BoolExpression.Evaluate(scope) is bool condition)
-         {
-             while (condition)
+          
+             while (BoolExpression.Evaluate(scope) is bool condition && condition)
              {
                 Body.Evaluate(scopeStatment);
              }
-         } else {
-            throw new Exception("Missing or Invalid Expression for While Condition");
-         }
+         
+            if(BoolExpression.Evaluate(scope) is not bool) throw new Exception("Missing or Invalid Expression for While Condition");
+         
          return null!;
          
     }

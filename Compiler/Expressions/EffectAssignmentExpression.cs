@@ -10,7 +10,7 @@ public class EffectAssignmentExpression : Expressions
     public AssignmentExpression Name { get; set; }
     public List<AssignmentExpression> Param { get;set; }
 
-    private Scope ? scope{get;set;}
+    private Scope  scope{get;set;}
 
     public EffectAssignmentExpression(AssignmentExpression name, List<AssignmentExpression> param)
     {
@@ -62,12 +62,13 @@ public class EffectAssignmentExpression : Expressions
               if(Param.Exists(x=>varName==x.Identifier.Var.Text))
               {
                 AssignmentExpression param=Param.Find(x=>varName==x.Identifier.Var.Text)!;
-
+                 scope.Variables.Add(item);
                 if(item.DataType is null)
                 {
                     item.Value=param.Right;
                 } else if(item.DataType is not null)
-                {
+                {   
+                   
                     var right=param.Right.Evaluate(scope!);
                     if(item.DataType== Tokens.TokenType.NumberKeyword && right is double) item.Value=right;
                     else if(item.DataType== Tokens.TokenType.BoolKeyword && right is bool) item.Value=right;
@@ -77,7 +78,7 @@ public class EffectAssignmentExpression : Expressions
                         
                      
                 }
-              }
+              } else throw new Exception($"Missing Param {varName}");
             }
         }
         

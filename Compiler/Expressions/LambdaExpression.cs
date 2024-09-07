@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gwent;
+using Logic;
 
 public class LambdaExpression : Expressions
 {
@@ -14,7 +15,7 @@ public class LambdaExpression : Expressions
 
     public Tokens.TokenType Delegate{get;}
 
-    private Scope ? scope{get;set;}
+    private Scope  scope{get;set;}
 
     public LambdaExpression( Tokens Do, Statement body, Tokens.TokenType Delegate, params VarExpression[] variables)
     {   
@@ -30,7 +31,7 @@ public class LambdaExpression : Expressions
 
     public override bool CheckSemantic()
     {
-        throw new NotImplementedException();
+       return true;
     }
     public bool DelegateCheckSemantic(Scope internalScope)
     {
@@ -57,28 +58,39 @@ public class LambdaExpression : Expressions
 
     public override object Evaluate(Scope scope)
     {    // Devuelve un Action o un Predicate
-         if(Delegate == Tokens.TokenType.ActionExpression)
-         {
-            foreach (var item in Variables )
+         this.scope=scope;
+          foreach (var item in Variables )
             {
                 scope.Variables.Add(item);
             }
+         if(Delegate == Tokens.TokenType.ActionKeyword)
+         {
+           
 
-            Action action=()=> Body.Evaluate(scope);
+            Action<List<Card>> action=Evaluate;
+            
+
             return action;
          }
          if(Delegate == Tokens.TokenType.PredicateKeyword)
          {  
-            VarExpression expression;
-            foreach (var item in Variables)
-            {
-                scope.Variables.Add(item);
-                expression=item;
-            }
-            Predicate<VarExpression> predicate=(expression) => (bool)Body.Expressions.First().Evaluate(scope);
+            
+            
+            Predicate<Card> predicate=Evaluate;
             
             return predicate;
          }
          throw new Exception("Invalid Operation");
+    }
+
+    public bool Evaluate(Card card)
+    {
+       Variables[0].Value=card;
+       return (bool)Body.Expressions.First().Evaluate(scope!);
+    }
+    public void Evaluate(List<Card> cards)
+    {
+        Variables[0].Value=cards;
+        Body.Evaluate(scope!);
     }
 }

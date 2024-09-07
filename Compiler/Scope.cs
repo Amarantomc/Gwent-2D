@@ -4,7 +4,7 @@ using Gwent;
    public class Scope{
 
      public List<VarExpression> Variables{get;set;}
-     public Scope ? Parent{get; set;}
+     public Scope  Parent{get; set;}
 
      public Scope()
      {
@@ -20,6 +20,8 @@ using Gwent;
            Variables.Add(item);
         }
      }
+    
+
 
      public Scope CreateChild()
      {
