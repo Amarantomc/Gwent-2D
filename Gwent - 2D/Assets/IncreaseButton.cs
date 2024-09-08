@@ -28,7 +28,12 @@ public class IncreaseButton : MonoBehaviour
                     else if(card.Rows== Boards.Rows.S) rowIncrease=GameObject.Find("S Player2");
                     card.Effect.Action(GameManager.Instance.Players[1], increaseCard);
                     GameManager.Instance.Players[1].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player2Turn);
+                    
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
+
+                     
+                   
                     }else{
                           hand=GameObject.Find("Hand Player1");
                     if(card.Rows== Boards.Rows.M) rowIncrease=GameObject.Find("M Player1");
@@ -36,7 +41,10 @@ public class IncreaseButton : MonoBehaviour
                     else if(card.Rows== Boards.Rows.S) rowIncrease=GameObject.Find("S Player1");
                     card.Effect.Action(GameManager.Instance.Players[0], increaseCard);
                     GameManager.Instance.Players[0].RefreshPoints();
+                       CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player1Turn);
+                    
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
+                     
                     }
                   
                    
@@ -50,7 +58,10 @@ public class IncreaseButton : MonoBehaviour
                     else if(card.Rows== Boards.Rows.S) rowIncrease=GameObject.Find("S Player1");
                     card.Effect.Action(GameManager.Instance.Players[0], increaseCard);
                     GameManager.Instance.Players[0].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player1Turn);
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
+                       
+                     
                         } else{
                             hand=GameObject.Find("Hand Player2");
                     if(card.Rows== Boards.Rows.M) rowIncrease=GameObject.Find("M Player2");
@@ -58,7 +69,10 @@ public class IncreaseButton : MonoBehaviour
                     else if(card.Rows== Boards.Rows.S) rowIncrease=GameObject.Find("S Player2");
                     card.Effect.Action(GameManager.Instance.Players[1], increaseCard);
                     GameManager.Instance.Players[1].RefreshPoints();
+                       CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player2Turn);
+                   
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
+                     
                         }
                      
                      
@@ -66,9 +80,7 @@ public class IncreaseButton : MonoBehaviour
                    
             
          } 
-               while(AllCards.transform.childCount!=0){
-                         AllCards.transform.GetChild(0).gameObject.transform.SetParent(hand.transform,false);
-                    }
+                
                     Panel.SetActive(false);
     }
 }

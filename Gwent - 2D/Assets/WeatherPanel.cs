@@ -22,6 +22,11 @@ public class WeatherPanel : MonoBehaviour
 
        
     public void SetCards(){
+      while(AllCards.transform.childCount!=0)
+          {
+               Destroy(AllCards.gameObject.transform.GetChild(0));
+          }
+      
       if(GameManager.Instance.State == GameManager.GameState.Player1Turn ){
              GameObject hand= GameObject.Find("Hand Player1");
                for(int i=0;i<hand.transform.childCount;i++){

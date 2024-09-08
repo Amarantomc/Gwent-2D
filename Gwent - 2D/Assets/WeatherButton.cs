@@ -30,6 +30,8 @@ public class WeatherButton : MonoBehaviour
                     card.Effect.Action(GameManager.Instance.Players[1],GameManager.Instance.Players[0],weatherCard);
                     GameManager.Instance.Players[1].RefreshPoints();
                     GameManager.Instance.Players[0].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player2Turn);
+                    
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
                     }else{
                           hand=GameObject.Find("Hand Player1");
@@ -39,6 +41,8 @@ public class WeatherButton : MonoBehaviour
                     card.Effect.Action(GameManager.Instance.Players[0],GameManager.Instance.Players[1], weatherCard);
                     GameManager.Instance.Players[0].RefreshPoints();
                     GameManager.Instance.Players[1].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player1Turn);
+                   
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
                     }
                   
@@ -54,6 +58,8 @@ public class WeatherButton : MonoBehaviour
                     card.Effect.Action(GameManager.Instance.Players[0],GameManager.Instance.Players[1], weatherCard);
                     GameManager.Instance.Players[0].RefreshPoints();
                     GameManager.Instance.Players[1].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player1Turn);
+                    
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
                         } else{
                             hand=GameObject.Find("Hand Player2");
@@ -63,6 +69,8 @@ public class WeatherButton : MonoBehaviour
                     card.Effect.Action(GameManager.Instance.Players[1],GameManager.Instance.Players[0],weatherCard);
                     GameManager.Instance.Players[1].RefreshPoints();
                     GameManager.Instance.Players[0].RefreshPoints();
+                    CardsManager.Instance.RemoveCard(SelectedCard.transform.GetChild(0).gameObject, GameManager.GameState.Player2Turn);
+                    
                     SelectedCard.transform.GetChild(0).gameObject.transform.SetParent(rowIncrease.transform,false);
                         }
                      
@@ -71,9 +79,7 @@ public class WeatherButton : MonoBehaviour
                    
             
          } 
-               while(AllCards.transform.childCount!=0){
-                         AllCards.transform.GetChild(0).gameObject.transform.SetParent(hand.transform,false);
-                    }
+               
                     Panel.SetActive(false);
      }
 }
