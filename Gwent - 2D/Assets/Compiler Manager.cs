@@ -294,14 +294,16 @@ public static class CompilerManager
         
     }
 
-    public static void ApplyVisual( List<GameObject> objects, List<Card> cards, string source)
+    public static void ApplyVisual( List<GameObject> objects, string source)
     {
         if(source== "board" || source=="field" || source=="otherField")
         {
-           foreach (var item in objects)
+           if(source=="board")
+           {
+              foreach (var item in objects)
            {
               bool find=false;
-              foreach (var card in cards)
+              foreach (var card in GetPlayer(1).Board.GetValues())
               {
                  if(card.Name==item.gameObject.GetComponent<data>().card.Name)
                  {
@@ -312,6 +314,61 @@ public static class CompilerManager
 
               if(!find) Object.Destroy(item);
            }
+
+               foreach (var item in objects)
+           {
+              bool find=false;
+              foreach (var card in GetPlayer(2).Board.GetValues())
+              {
+                 if(card.Name==item.gameObject.GetComponent<data>().card.Name)
+                 {
+                   find=true;
+                   break;
+                 }
+              }
+
+              if(!find) Object.Destroy(item);
+           }
+           } 
+           
+           else if(source=="field")
+           {
+               
+               foreach (var item in objects)
+           {
+              bool find=false;
+              foreach (var card in GetPlayer().Board.GetValues())
+              {
+                 if(card.Name==item.gameObject.GetComponent<data>().card.Name)
+                 {
+                   find=true;
+                   break;
+                 }
+              }
+
+              if(!find) Object.Destroy(item);
+           }
+           } 
+             else if(source=="otherField")
+             {
+                
+                foreach (var item in objects)
+            {
+              bool find=false;
+              foreach (var card in GetPlayer(2).Board.GetValues())
+              {
+                 if(card.Name==item.gameObject.GetComponent<data>().card.Name)
+                 {
+                   find=true;
+                   break;
+                 }
+              }
+
+              if(!find) Object.Destroy(item);
+           }
+             }
+           
+           
         }
         return;
     }

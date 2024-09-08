@@ -259,7 +259,7 @@ public class EffectManager : MonoBehaviour
                     }
 
                     item.Item2.Invoke(aux.Item2);
-                    CompilerManager.ApplyVisual(aux.Item1,aux.Item2,source);
+                    CompilerManager.ApplyVisual(aux.Item1,source);
                 }
              }
      
