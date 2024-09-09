@@ -30,7 +30,7 @@ public class InExpression : Expressions
     }
     public bool Evaluate(Scope scope, int index)
     {   //Chequeo que la colleccion coincida y exista
-        IEnumerable<Card> cards=(FindScope(scope,Collection.Var.Text).Value is IEnumerable<Card> x ?x: throw new Exception() ) ;
+        IEnumerable<Card> cards=FindScope(scope,Collection.Var.Text).Value is IEnumerable<Card> x ?x: throw new Exception()  ;
        // if(FindVarInScope(scope,Var.Var.Text)) throw new Exception($"Already using this Variable {Var.Var.Text}");
         
         cards=cards.Skip(index);

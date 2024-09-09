@@ -1,0 +1,13 @@
+ card {
+            Type: "Oro" ,
+	 Name: "Travis" ,
+	Faction : "RockStar" ,
+         Power: 10 ,
+         Range :["Melee" , "Ranged"] ,
+       
+}
+                        
+    
+
+
+

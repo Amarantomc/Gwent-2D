@@ -68,7 +68,8 @@ public class CardExpression : Expressions
 
             } else throw new Exception($"Invalid Card Type {type}");
         } 
-          OnActivation.CheckSemantic(scope!);
+          if(OnActivation is not null) OnActivation.CheckSemantic(scope!);
+          
           return true;
 
           
@@ -176,7 +177,8 @@ public class CardExpression : Expressions
          }
          
        
-
+       if(OnActivation is not null)
+       {
 List<(EffectExpression,SelectorExpression)> aux=(List<(EffectExpression,SelectorExpression)>)OnActivation.Evaluate(scope);
          List<(string,Action<List<Card>>,string,bool,Predicate<Card>)> result= new List<(string,Action<List<Card>>,string, bool, Predicate<Card>)>();
          
@@ -197,9 +199,9 @@ List<(EffectExpression,SelectorExpression)> aux=(List<(EffectExpression,Selector
 
          }
                 card.Effect=new CompilerEffects(result);
-               return card;
-         
-
-          
+               
+       }
+          else card.Effect=new NoEffect();
+          return card;
     }
 }

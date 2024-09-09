@@ -52,7 +52,7 @@ public class EffectAssignmentExpression : Expressions
         this.scope=scope;
         var name=Name.Evaluate(scope!);
         var effect=Context.Effects.Find(x=> x.Name.Evaluate(scope!).Equals(name));
-        if(effect is null) throw new Exception($"Effect does not exist {Name.Evaluate(scope).ToString()}");
+        if(effect is null) throw new Exception($"Effect does not exist {Name.Evaluate(scope)}");
 
         if(effect.Params is not null)
         {

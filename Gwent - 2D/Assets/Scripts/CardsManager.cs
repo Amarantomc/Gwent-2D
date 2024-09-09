@@ -63,15 +63,71 @@ public class CardsManager : MonoBehaviour
      
      
      
-     
+      public void SetCardInHand()
+      {
+            cardsPlayer1=new List<GameObject>(); 
+            cardsPlayer2=new List<GameObject>();
+
+             //Cargo todas las cartas en los respectivos arrays de jugadores
+         for(int i=0;i<player1.Hand.Count;i++){
+            bool find=false;
+           for(int j=0;j<prefabs.Length;j++){
+             
+             if( player1.Hand[i].Name==prefabs[j].name  ){
+                  find=true;
+                 cardsPlayer1.Add(prefabs[j]);
+                  
+                 cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
+                 cardsPlayer1[i].GetComponent<data>().card.Owner=1;
+                 cardsPlayer1[i].GetComponent<data>().player=player1;
+
+               break;
+           }
+         } 
+           if(!find)
+           {
+             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
+             cardsPlayer1.Add(cardPrefab);
+             cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
+             cardsPlayer1[i].GetComponent<data>().card.Owner=1;
+
+             cardsPlayer1[i].GetComponent<data>().player=player1;
+
+           }
+         }
+
+         for(int i=0;i<player2.Hand.Count;i++){
+            bool find=false;
+            for(int j=0;j<prefabs.Length;j++){
+               if(player2.Hand[i].Name==prefabs[j].name){
+                 cardsPlayer2.Add(prefabs[j]);
+                 find=true; 
+                 cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
+                 cardsPlayer2[i].GetComponent<data>().card.Owner=2;
+
+                 cardsPlayer2[i].GetComponent<data>().player=player2;
+                 break;
+               }
+            }
+             if(!find)
+           {
+             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
+             cardsPlayer2.Add(cardPrefab);
+             cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
+             cardsPlayer2[i].GetComponent<data>().card.Owner=2;
+
+             cardsPlayer2[i].GetComponent<data>().player=player2;
+
+           }
+         }
+      }
      
        private void CardStar(){
         
 
           prefabs= Resources.LoadAll<GameObject>("Prefabs");
           sprite=Resources.LoadAll<Sprite>("Sprites");
-         cardsPlayer1=new List<GameObject>(); 
-         cardsPlayer2=new List<GameObject>();
+       
 
         GameManager.Instance.updateState(GameManager.GameState.Start);
          player1=GameManager.Instance.Players[0];
@@ -131,63 +187,9 @@ public class CardsManager : MonoBehaviour
             }
             index++;
          }
-        
-         //Cargo todas las cartas en los respectivos arrays de jugadores
-         for(int i=0;i<player1.Hand.Count;i++){
-            bool find=false;
-           for(int j=0;j<prefabs.Length;j++){
-             
-             if( player1.Hand[i].Name==prefabs[j].name  ){
-                  find=true;
-                 cardsPlayer1.Add(prefabs[j]);
-                  
-                 cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
-                 cardsPlayer1[i].GetComponent<data>().card.Owner=1;
-                 cardsPlayer1[i].GetComponent<data>().player=player1;
-
-               break;
-           }
-         } 
-           if(!find)
-           {
-             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
-             cardsPlayer1.Add(cardPrefab);
-             cardsPlayer1[i].GetComponent<data>().card=player1.Hand[i];
-             cardsPlayer1[i].GetComponent<data>().card.Owner=1;
-
-             cardsPlayer1[i].GetComponent<data>().player=player1;
-
-           }
-         }
-
-         for(int i=0;i<player2.Hand.Count;i++){
-            bool find=false;
-            for(int j=0;j<prefabs.Length;j++){
-               if(player2.Hand[i].Name==prefabs[j].name){
-                 cardsPlayer2.Add(prefabs[j]);
-                 find=true; 
-                 cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
-                 cardsPlayer1[i].GetComponent<data>().card.Owner=2;
-
-                 cardsPlayer2[i].GetComponent<data>().player=player2;
-                 break;
-               }
-            }
-             if(!find)
-           {
-             var cardPrefab=prefabs.ToList().Find(x=> x.name== "Compiler Card");
-             cardsPlayer2.Add(cardPrefab);
-             cardsPlayer2[i].GetComponent<data>().card=player2.Hand[i];
-             cardsPlayer1[i].GetComponent<data>().card.Owner=2;
-
-             cardsPlayer2[i].GetComponent<data>().player=player2;
-
-           }
-         }
-          
-      
- 
-       } 
+            
+            SetCardInHand();
+        } 
 
 
         

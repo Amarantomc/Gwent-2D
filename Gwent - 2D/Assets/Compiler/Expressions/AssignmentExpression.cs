@@ -85,8 +85,10 @@ public class  AssignmentExpression : Expressions
             
            VarExpression variable=null!;
            if(right is bool) variable=new VarExpression(Identifier.Var,Tokens.TokenType.BoolKeyword,right);
-           if(right is double) variable=new VarExpression(Identifier.Var, Tokens.TokenType.NumberKeyword,right);
-           if(right is string) variable=new VarExpression(Identifier.Var, Tokens.TokenType.StringKeyword,right);
+          else if(right is double) variable=new VarExpression(Identifier.Var, Tokens.TokenType.NumberKeyword,right);
+           else if(right is string) variable=new VarExpression(Identifier.Var, Tokens.TokenType.StringKeyword,right);
+            else if(right is List<Card>) variable=new VarExpression(Identifier.Var, Tokens.TokenType.String,right);
+                else if(right is Card) variable=new VarExpression(Identifier.Var, Tokens.TokenType.String,right);
            VarExpression var=ReturnVar(scope);
             if(Op.Type== Tokens.TokenType.Assignment|| Op.Type== Tokens.TokenType.TwoDots) var.Value=variable!.Value;
             else if(Op.Type== Tokens.TokenType.PlusEquals && var.Value is double x && variable!.Value is double y)

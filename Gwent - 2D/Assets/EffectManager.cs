@@ -244,6 +244,11 @@ public class EffectManager : MonoBehaviour
                    
                     for(int i=0;i<aux.Item2.Count;i++)
                     {
+                       if(aux.Item2[i] is not UnitsCard)
+                       {
+                          aux.Item2.RemoveAt(i);
+                          i--;
+                       }
                       if(item.Item5 is not null &&!item.Item5(aux.Item2[i]))
                       {
                         aux.Item2.RemoveAt(i);
@@ -261,6 +266,8 @@ public class EffectManager : MonoBehaviour
                     item.Item2.Invoke(aux.Item2);
                     CompilerManager.ApplyVisual(aux.Item1,source);
                 }
+
+                CardsManager.Instance.SetCardInHand();
              }
      
              player1.RefreshPoints();

@@ -37,7 +37,10 @@ public class LambdaExpression : Expressions
     {
          foreach (var item in Variables)
          {
-            FindVar(internalScope,item.Var.Value.ToString()!);
+             if(FindVar(internalScope,item.Var.Value.ToString()!) && item.Var.Value.ToString()!= "targets"  && item.Var.Value.ToString()!= "context")
+            {
+               throw new Exception($"Variable {item.Var.Value} was defined already");
+            }
          }
          
          
@@ -47,11 +50,11 @@ public class LambdaExpression : Expressions
 
     private bool FindVar(Scope internalScope, string name)
     { 
-        if (internalScope is null) return true; 
+        if (internalScope is null) return false; 
             
-             if (internalScope!.Variables.Exists(x=> x.Var.Value.ToString()== name) && name!="targets" && name!="context")
+             if (internalScope!.Variables.Exists(x=> x.Var.Value.ToString()== name))
             {
-                throw new Exception($"Variable {name} was defined already");
+                return true;
             }
             return FindVar(internalScope.Parent!,name);
     }
@@ -59,9 +62,14 @@ public class LambdaExpression : Expressions
     public override object Evaluate(Scope scope)
     {    // Devuelve un Action o un Predicate
          this.scope=scope;
+          
           foreach (var item in Variables )
             {
-                scope.Variables.Add(item);
+                if(!FindVar(scope,item.Var.Value.ToString()!))
+                {
+                   scope.Variables.Add(item);
+                }
+                
             }
          if(Delegate == Tokens.TokenType.ActionKeyword)
          {
@@ -86,11 +94,15 @@ public class LambdaExpression : Expressions
     public bool Evaluate(Card card)
     {
        Variables[0].Value=card;
+       scope.Variables.Find(x=>x.Var.Text== Variables[0].Var.Text).Value=card;
        return (bool)Body.Expressions.First().Evaluate(scope!);
     }
     public void Evaluate(List<Card> cards)
     {
         Variables[0].Value=cards;
+        scope.Variables.Find(x=>x.Var.Text== Variables[0].Var.Text).Value=cards;
         Body.Evaluate(scope!);
     }
+
+   
 }

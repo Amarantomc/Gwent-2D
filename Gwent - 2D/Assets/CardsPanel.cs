@@ -49,9 +49,11 @@ public class CardsPanel : MonoBehaviour
                 else if(item.name =="Type C")  item.gameObject.GetComponent<TMP_Text>().text = (unitsCard.Type== UnitsCard.UnitType.Gold)?"Oro" :"Plata";
                 else if(item.name =="Power")  item.GetChild(0).gameObject.GetComponent<TMP_Text>().text = unitsCard.Power.ToString();
                 else if(item.name =="Effect C")
-                {
-                    var effect= unitsCard.Effect as CompilerEffects;
-                    item.gameObject.GetComponent<TMP_Text>().text = effect.Values[0].Item1;
+                {   
+                    if(unitsCard.Effect is CompilerEffects effect) item.gameObject.GetComponent<TMP_Text>().text = effect.Values[0].Item1;
+                    else item.gameObject.GetComponent<TMP_Text>().text = "None";
+                    
+                    
                 }
 
             } 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Logic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public static class CompilerManager
 {
@@ -251,7 +252,7 @@ public static class CompilerManager
 
                }
             
-            default:
+            case "board":
             { //board
               List<Card> result=Player1.Board.GetValues().ToList().Concat(Player2.Board.GetValues().ToList()).ToList();
               List<GameObject>objects=new List<GameObject>();
@@ -290,6 +291,7 @@ public static class CompilerManager
                }
                return (objects,result);
             } 
+            default: return (new List<GameObject> (), new List<Card>());
         }
         
     }
@@ -311,14 +313,7 @@ public static class CompilerManager
                    break;
                  }
               }
-
-              if(!find) Object.Destroy(item);
-           }
-
-               foreach (var item in objects)
-           {
-              bool find=false;
-              foreach (var card in GetPlayer(2).Board.GetValues())
+               foreach (var card in GetPlayer(2).Board.GetValues())
               {
                  if(card.Name==item.gameObject.GetComponent<data>().card.Name)
                  {
@@ -326,9 +321,12 @@ public static class CompilerManager
                    break;
                  }
               }
-
               if(!find) Object.Destroy(item);
+
+              
            }
+
+            
            } 
            
            else if(source=="field")

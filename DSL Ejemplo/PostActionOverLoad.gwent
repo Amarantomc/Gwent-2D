@@ -1,0 +1,81 @@
+effect {
+Name : "Damage" ,
+Params : {
+  Amount: Number
+},
+Action: (targets , context) => {
+  for target in targets {
+
+   i=0;
+  while (i++ <Amount)
+         target.Power-=1;
+      };
+     }
+  }
+
+
+effect {
+ Name : "Draw" ,
+ Action: (targets , context) => {
+
+topCard= context.Deck.Pop();
+context.Hand.Add(topCard);
+context.Hand.Shuffle();
+}
+}
+
+effect {
+Name : "ReturnToDeck" ,
+Action: (targets , context) => {
+  for target in targets {
+
+   owner=target.Owner;
+   deck=context.DeckOfPlayer(owner);
+   deck.Push(target);
+  deck.Shuffle();
+  context.Board.Remove(target);
+      };
+     }
+  }
+
+card {
+            Type: "Oro" ,
+	 Name: "JuanMI" ,
+	Faction : "RockStar" ,
+         Power: 15 ,
+         Range :["Melee" , "Ranged"] ,
+         
+   OnActivation: [ 
+   {
+      Effect : {
+          Name : "Damage" ,
+          Amount : 5 ,
+    },
+       Selector : { 
+	Source : "board",
+          Single: false ,
+          Predicate: (unit)=> unit.Power >=12 
+  },
+     PostAction : {
+         Type : "ReturnToDeck" , 
+         Selector : {
+          Source : "otherField" ,
+          Predicate : (unit) => true
+       } , 
+          PostAction : {
+         Type : "Draw" , 
+         Selector : {
+          Source : "field" ,
+          Predicate : (unit) => true
+       } ,
+    }
+    }
+} 
+  
+]
+}
+                        
+    
+
+
+

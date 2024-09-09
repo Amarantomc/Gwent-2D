@@ -185,7 +185,7 @@ public class FunctionExpression : Expressions
                     Players playerParam= CompilerManager.GetPlayer((int)a);
                     if( FunctionType== Tokens.TokenType.HandOfPlayerKeyword) return playerParam.Hand;
                     if( FunctionType== Tokens.TokenType.DeckOfPlayerKeyword) return playerParam.Deck.GetDeck();
-                    if( FunctionType== Tokens.TokenType.FieldOfPlayerKeyword) return playerParam.Board.GetValues();
+                    if( FunctionType== Tokens.TokenType.FieldOfPlayerKeyword) return playerParam.Board;
                     if( FunctionType== Tokens.TokenType.GraveyardOfPlayerKeyword) return playerParam.Board[ Boards.Rows.Graveyard];
 
 
