@@ -93,9 +93,9 @@ public class PostActionExpression : Expressions
           foreach (VarExpression item in effect.Params.ParamsStatement.Expressions)
             {
               string varName=item.Var.Text;
-              if(Param.Exists(x=>varName==x.Identifier.Var.Text))
+              if(postActionExpression.Param.Exists(x=>varName==x.Identifier.Var.Text))
               {
-                AssignmentExpression param=Param.Find(x=>varName==x.Identifier.Var.Text)!;
+                AssignmentExpression param=postActionExpression.Param.Find(x=>varName==x.Identifier.Var.Text)!;
                 scope.Variables.Add(item);
                 if(item.DataType is null)
                 {

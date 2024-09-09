@@ -40,7 +40,7 @@ public class FunctionExpression : Expressions
     {
         if (value is Card card)
         {
-            if(FunctionType== Tokens.TokenType.PowerKeyword && card is UnitsCard unitsCard) return(double) unitsCard.Power;
+            if(FunctionType== Tokens.TokenType.PowerKeyword) return(double) card.Power;
             else if(FunctionType== Tokens.TokenType.NameKeyword ) return card.Name;
             else if(FunctionType== Tokens.TokenType.FactionKeyword ) return card.Faccion;
             else if(FunctionType== Tokens.TokenType.RangeKeyword )

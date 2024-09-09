@@ -11,6 +11,8 @@ public class Lure : Card
     public override Boards.Rows Rows{get;set;}
     public override int Owner { get ; set ; }
 
+    public override int Power {get;set;}
+
     public Lure(string name, string faccion,  Effects effect,int owner)
     {
         Name=name;
@@ -18,5 +20,6 @@ public class Lure : Card
         Effect=effect;
         Owner = owner;
         Rows =0;
+        Power=0;
     }
 }

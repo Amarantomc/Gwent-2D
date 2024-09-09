@@ -11,6 +11,10 @@ public class Clearance : Card
     public override Boards.Rows Rows{get;set;}
     public override int Owner { get ; set ; }
 
+    public override int Power {get;set;}
+
+     
+
     public Clearance(string name, string faccion, Effects effect,int owner)
     {
         Name=name;
@@ -18,5 +22,6 @@ public class Clearance : Card
         Effect=effect;
         Owner = owner;
         Rows =0;
+        Power=0;
     }
 }

@@ -10,7 +10,7 @@ public class BossCard : Card
     public override Boards.Rows Rows{get;set;}
 
 
-    public int Power{get;}
+    public override int Power{get;set;}
     public override int Owner { get ; set ; }
 
     public BossCard(string name, string faccion, int power, Effects effect, int owner)

@@ -5,7 +5,7 @@ public abstract class Card{
 
 public abstract  string Faccion{get;}
 
- 
+ public abstract int Power{get;set;}
 
 public abstract Effects Effect{get;set;} 
 

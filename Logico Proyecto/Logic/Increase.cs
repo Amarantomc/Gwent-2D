@@ -11,6 +11,8 @@ public class Increase : Card
     public override Boards.Rows Rows{get;set;}
     public override int Owner { get ; set ; }
 
+    public override int Power {get;set;}
+
     public Increase(string name, string faccion,  Effects effects,int owner)
     {
         Name=name;
@@ -18,6 +20,7 @@ public class Increase : Card
         Effect=effects;
         Owner = owner;
         Rows =0;
+        Power=0;
          
     }
 }

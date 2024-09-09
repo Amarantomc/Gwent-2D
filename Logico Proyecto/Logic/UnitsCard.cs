@@ -11,7 +11,8 @@ public override Effects Effect{get;set;}
 
 public override Boards.Rows Rows{get;set;}
 
-public int Power{get;set;}
+public override int Power{get;set;}
+
 
 public AtackType Atack{get;} 
 

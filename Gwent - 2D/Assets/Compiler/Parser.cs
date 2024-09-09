@@ -849,6 +849,7 @@ public class Parser{
             else if(CurrentToken.Type== Tokens.TokenType.Identifier)
             {
                  variable.Add(AssignmentExpressions());
+                 continue;
             } else
             {
                Error.ErrorList.Add(new Error(Error.ErrorType.Semantic,CurrentToken.Position,"Unexpected token "+ CurrentToken.Text));

@@ -10,6 +10,7 @@ public class WeatherCard: Card
 
     public override Boards.Rows Rows{get;set;}
     public override int Owner {  get;set; }
+    public override int Power { get ; set ; }
 
     public WeatherCard (string name, string faccion, Effects effect,int owner)
      {
@@ -18,6 +19,7 @@ public class WeatherCard: Card
         Effect=effect;
         Owner = owner;
         Rows =0;
+        Power=0;
          
         
      }

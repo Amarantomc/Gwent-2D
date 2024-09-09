@@ -26,7 +26,7 @@ public class Lexer{
      }
     private  double Doubles(){
    string result="";
-  while(currentChar!='\0'&& (char.IsDigit(currentChar) || currentChar == ',')){
+  while(currentChar!='\0'&& (char.IsDigit(currentChar) || currentChar == '.')){
      result+=currentChar;
      Advanced();
   }  

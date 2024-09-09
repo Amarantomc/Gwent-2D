@@ -27,6 +27,7 @@ public class CompilerButton : MonoBehaviour
         try
         {
           var tree=SyntaxTree.Parse(Input.text); 
+          
           if( Error.ErrorList.Any())
           {
              string error="";
